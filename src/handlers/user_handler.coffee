@@ -4,7 +4,8 @@ When = require 'when'
 Token = require 'random-token'
 
 class UserHandler
-  @create = (reply, data) ->
+  @create = (request, reply) ->
+    data = request.payload
     user = User.findOne({email: data.email}).exec()
 
     When(user).then (user) ->
@@ -18,7 +19,8 @@ class UserHandler
       else if user.email is data.email
         reply({message: 'The user already exists!'}).code(417)
 
-  @login = (reply, data) ->
+  @login = (request, reply) ->
+    data = request.payload
     user = User.findOne({email: data.email}).exec()
 
     When(user).then (user) ->

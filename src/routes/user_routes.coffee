@@ -6,7 +6,7 @@ routes = [
     method: 'POST',
     path: '/users/create',
     handler: (request, reply) ->
-      UserHandler.create(reply, request.payload)
+      UserHandler.create(request, reply)
     ,
     config: {
       validate: {
@@ -23,7 +23,7 @@ routes = [
     method: 'POST',
     path: '/users/login',
     handler: (request, reply) ->
-      UserHandler.login(reply, request.payload)
+      UserHandler.login(request, reply)
     ,
     config: {
       validate: {
