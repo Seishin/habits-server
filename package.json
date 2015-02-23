@@ -1,0 +1,19 @@
+{
+  "name": "Habits",
+  "version": "0.0.1",
+  "description": "Simple and interactive habits and to-do gamified service.",
+  "author": "Atanas Dimitrov <atanas@naughtyspirit.co>",
+  "main": "lib/index.js",
+  "dependencies": {
+    "hapi": "latest",
+    "joi": "latest",
+    "mongoose": "latest",
+    "mongoose-timestamp": "latest",
+    "mongoose-findorcreate": "latest",
+    "when": "latest",
+    "random-token": "latest"
+  },
+  "engines": {
+    "node": "latest"
+  }
+}
