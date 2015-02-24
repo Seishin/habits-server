@@ -1,4 +1,4 @@
-UserHandler = require('../handlers/user_handler').UserHandler
+UserHandler = require('./user_handler').UserHandler
 Joi = require 'joi'
 
 routes = [
