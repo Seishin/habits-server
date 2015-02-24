@@ -37,6 +37,20 @@ routes = [
     }
   },
   {
+    method: 'POST',
+    path: '/habits/increment/{habitId}',
+    handler: (request, reply) ->
+      HabitHandler.increment(request, reply)
+    ,
+    config: {
+      validate: {
+        params: {
+          habitId: Joi.string().required()
+        }
+      }
+    }
+  },
+  {
     method: 'PUT',
     path: '/habits/update/{habitId}',
     handler: (request, reply) ->
@@ -49,7 +63,6 @@ routes = [
         },
         payload: {
           text: Joi.string().optional()
-          counter: Joi.number().optional()
         }
       }
     }

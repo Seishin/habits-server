@@ -1,6 +1,7 @@
 Models = require '../models'
 User = Models.User
 Habit = Models.Habit
+Counter = Models.Counter
 
 When = require 'when'
 
@@ -18,7 +19,12 @@ class HabitHandler
     user = User.findOne({token: request.headers.authorization}).exec()
     user.then (user) ->
       habit = Habit.findOne({_id: request.params.habitId, user: user}).exec()
-      reply(habit).code(200)
+      habit.then (habit) ->
+        result = {
+          text: habit.text,
+          createdAt: habit.createdAt
+        }
+        reply(result).code(200)
 
   @create = (request, reply) ->
     user = User.findOne({token: request.headers.authorization}).populate('habits').exec()
@@ -37,6 +43,25 @@ class HabitHandler
 
         reply(user).code(200)
 
+  @increment = (request, reply) ->
+    user = User.findOne({token: request.headers.authorization}).exec()
+
+    When(user).then (user) ->
+      if user is null
+        reply({message: 'Wrong token!'}).code(401)
+      else
+        habit = Habit.findOne({_id: request.params.habitId, user: user}).exec()
+        
+        When(habit).then (habit) ->
+          counter = new Counter()
+          counter.habit = habit
+          counter.save()
+          
+          habit.counters.push counter
+          habit.save()
+
+          reply({message: "Success!"}).code(200)
+
   @update = (request, reply) ->
     user = User.findOne({token: request.headers.authorization}).exec()
 
@@ -52,9 +77,6 @@ class HabitHandler
           if habit
             if data.text
               habit.text = data.text
-
-            if data.counter
-              habit.counter = data.counter
 
             habit.save()
 
