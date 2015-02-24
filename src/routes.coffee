@@ -1,5 +1,5 @@
-UserRoutes = require('./routes/user_routes').routes
-HabitRoutes = require('./routes/habit_routes').routes
+UserRoutes = require('./users/user_routes').routes
+HabitRoutes = require('./habits/habit_routes').routes
 
 routes = []
 routes = routes.concat UserRoutes

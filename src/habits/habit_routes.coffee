@@ -1,4 +1,4 @@
-HabitHandler = require('../handlers/habit_handler').HabitHandler
+HabitHandler = require('./habit_handler').HabitHandler
 Joi = require 'joi'
 
 routes = [
