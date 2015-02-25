@@ -1,3 +1,5 @@
+Moment = require 'moment'
+
 Models = require '../models'
 User = Models.User
 Habit = Models.Habit
@@ -13,19 +15,19 @@ class StatsUtils
   @updateStatsByHabit = (habit) ->
     user = User.findOne({_id: habit.user}).exec()
     user.then (user) ->
-      today = new Date()
+      today = Moment(new Date()).format('YYYY-MM-DD')
       todayHabitsCount = 1
 
       for counter in habit.counters
-        date = new Date(counter.createdAt)
-        if date.getDate() == today.getDate() && date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()
+        date = Moment(new Date(counter.createdAt)).format('YYYY-MM-DD')
+        if date is today
           todayHabitsCount += 1
 
       stats = UserStats.findOne({_id: user.stats}).exec()
       stats.then (stats) ->
         exp = expGainByTimes todayHabitsCount
         stats.exp += exp
-        
+
         if stats.exp >= StatsUtils.expToNextLvl stats.lvl
           stats.lvl += 1
 

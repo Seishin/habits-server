@@ -11,7 +11,8 @@
     "mongoose-timestamp": "latest",
     "mongoose-findorcreate": "latest",
     "when": "latest",
-    "random-token": "latest"
+    "random-token": "latest",
+    "moment": "latest"
   },
   "engines": {
     "node": "latest"
