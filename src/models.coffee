@@ -16,14 +16,14 @@ userSchema = new Schema
 
 habitSchema = new Schema
   text: String
-  counters: [{type: Schema.Types.ObjectId, ref: 'Counter'}]
+  counters: [{type: Schema.Types.ObjectId, ref: 'HabitsCounter'}]
   user: {type: Schema.Types.ObjectId, ref: 'User'}
 
 dailyTask = new Schema
   text: String
   counters: [{type: Schema.Types.ObjectId, ref: 'Counter'}]
 
-counterSchema = new Schema
+habitsCounterSchema = new Schema
   value: {type: Number, default: 0}
   habit: {type: Schema.Types.ObjectId, ref: 'Habit'}
 
@@ -37,12 +37,12 @@ userSchema.plugin Timestamps
 userSchema.plugin FindOrCreate
 habitSchema.plugin Timestamps
 userSchema.plugin FindOrCreate
-counterSchema.plugin Timestamps
-counterSchema.plugin FindOrCreate
+habitsCounterSchema.plugin Timestamps
+habitsCounterSchema.plugin FindOrCreate
 userStatsSchema.plugin Timestamps
 userStatsSchema.plugin FindOrCreate
 
 module.exports.User = Mongoose.model('User', userSchema)
 module.exports.Habit = Mongoose.model('Habit', habitSchema)
-module.exports.Counter = Mongoose.model('Counter', counterSchema)
+module.exports.HabitsCounter = Mongoose.model('HabitsCounter', habitsCounterSchema)
 module.exports.UserStats = Mongoose.model('UserStats', userStatsSchema)

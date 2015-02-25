@@ -24,7 +24,7 @@ routes = [
   },
   {
     method: 'POST',
-    path: '/habits/create',
+    path: '/habits',
     handler: (request, reply) ->
       HabitHandler.create(request, reply)
     ,
@@ -52,7 +52,7 @@ routes = [
   },
   {
     method: 'PUT',
-    path: '/habits/update/{habitId}',
+    path: '/habits/{habitId}',
     handler: (request, reply) ->
       HabitHandler.update(request, reply)
     ,
@@ -69,7 +69,7 @@ routes = [
   },
   {
     method: 'DELETE',
-    path: '/habits/delete/{habitId}',
+    path: '/habits/{habitId}',
     handler: (request, reply) ->
       HabitHandler.delete(request, reply)
     ,

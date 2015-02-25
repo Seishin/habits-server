@@ -1,7 +1,7 @@
 Models = require '../models'
 User = Models.User
 Habit = Models.Habit
-Counter = Models.Counter
+Counter = Models.HabitsCounter
 
 When = require 'when'
 StatsUtils = require('../stats/utils').StatsUtils
@@ -75,8 +75,8 @@ class HabitHandler
         data = request.payload
 
         habit = Habit.findOne({_id: request.params.habitId, user: user}).exec()
-
         When(habit).then (habit) ->
+          console.dir habit
           if habit
             if data.text
               habit.text = data.text
@@ -90,7 +90,7 @@ class HabitHandler
   @delete = (request, reply) ->
     user = User.findOne({token: request.headers.authorization}).exec()
 
-    When(user).then (user) ->
+    user.then (user) ->
       if user is null
         reply({message: 'Wrong token!'}).code(401)
       else
@@ -101,5 +101,6 @@ class HabitHandler
             reply({message: "Success!"}).code(200)
         ).exec()
 
+    Counter.remove({habit: request.params.habitId}).exec()
 
 module.exports.HabitHandler = HabitHandler
