@@ -13,3 +13,5 @@ server.route Routes
 
 server.start ->
   console.log 'Server is running at: ', server.info.uri
+
+module.exports = server

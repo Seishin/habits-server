@@ -12,9 +12,20 @@
     "mongoose-findorcreate": "latest",
     "when": "latest",
     "random-token": "latest",
-    "moment": "latest"
+    "moment": "latest",
+    "coffee-script": "latest"
+  },
+  "devDependencies": {
+    "chai": "latest",
+    "inject-then": "latest",
+    "mocha": "latest",
+    "mocha-mongoose": "latest"
   },
   "engines": {
     "node": "latest"
+  },
+  "scripts": {
+    "start": "nodemon",
+    "test": "./node_modules/mocha/bin/mocha test/"
   }
 }

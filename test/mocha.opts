@@ -1,0 +1,6 @@
+--reporter spec
+-R spec
+--ui bdd
+
+--require coffee-script/register
+--compilers coffee:coffee-script/register
