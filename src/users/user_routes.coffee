@@ -3,6 +3,20 @@ Joi = require 'joi'
 
 routes = [
   {
+    method: 'GET',
+    path: '/users/{userId}',
+    handler: (request, reply) ->
+      UserHandler.get(request, reply)
+    ,
+    config: {
+      validate: {
+        params: {
+          userId: Joi.string().required()
+        }
+      }
+    }
+  },
+  {
     method: 'POST',
     path: '/users/create',
     handler: (request, reply) ->

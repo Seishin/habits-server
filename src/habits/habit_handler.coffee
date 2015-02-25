@@ -4,6 +4,7 @@ Habit = Models.Habit
 Counter = Models.Counter
 
 When = require 'when'
+StatsUtils = require('../stats/utils').StatsUtils
 
 class HabitHandler
   @getAll = (request, reply) ->
@@ -44,13 +45,13 @@ class HabitHandler
         reply(user).code(200)
 
   @increment = (request, reply) ->
-    user = User.findOne({token: request.headers.authorization}).exec()
+    user = User.findOne({token: request.headers.authorization}).populate('stats').exec()
 
     When(user).then (user) ->
       if user is null
         reply({message: 'Wrong token!'}).code(401)
       else
-        habit = Habit.findOne({_id: request.params.habitId, user: user}).exec()
+        habit = Habit.findOne({_id: request.params.habitId, user: user}).populate('counters').exec()
         
         When(habit).then (habit) ->
           counter = new Counter()
@@ -59,6 +60,8 @@ class HabitHandler
           
           habit.counters.push counter
           habit.save()
+
+          StatsUtils.updateStatsByHabit(habit)
 
           reply({message: "Success!"}).code(200)
 
