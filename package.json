@@ -1,6 +1,6 @@
 {
   "name": "Habits",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple and interactive habits and to-do gamified service.",
   "author": "Atanas Dimitrov <atanas@naughtyspirit.co>",
   "main": "lib/index.js",
