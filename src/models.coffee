@@ -32,6 +32,7 @@ userStatsSchema = new Schema
   exp: {type: Number, default: 0}
   gold: {type: Number, default: 0}
   lvl: {type: Number, default: 1}
+  alive: {type: Boolean, default: true}
 
 userSchema.plugin Timestamps
 userSchema.plugin FindOrCreate

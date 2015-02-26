@@ -9,6 +9,8 @@ UserStats = Models.UserStats
 
 class StatsUtils
   defaultExpPerTask = 30
+  defaultGoldPerTask = 10
+  defaultHPPerTask = 10
 
   @expToNextLvl = (lvl) ->
     return 25 * lvl * (1 + lvl)
@@ -32,11 +34,26 @@ class StatsUtils
         if stats.exp >= StatsUtils.expToNextLvl stats.lvl
           stats.lvl += 1
 
+        stats.hp -= defaultHPPerTask
+        if stats.hp <= 0
+          stats.hp = 0
+          stats.alive = false
+
+        stats.gold += goldGainByTimes todayHabitsCount
         stats.save()
         When(stats).then (stats) ->
           done()
 
   expGainByTimes = (times) ->
-    return Math.floor(defaultExpPerTask / times)
+    if (defaultExpPerTask / times) <= 1
+      return 0
+    else
+      return Math.floor(defaultExpPerTask / times)
+
+  goldGainByTimes = (times) ->
+    if (defaultGoldPerTask / times) <= 1
+      return 0
+    else
+      return Math.floor(defaultGoldPerTask / times)
 
 module.exports.StatsUtils = StatsUtils
