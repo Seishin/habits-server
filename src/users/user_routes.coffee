@@ -26,7 +26,7 @@ routes = [
     ,
     config: {
       tags: ['api'],
-      description: 'Get a specific user by his userId'
+      description: 'Get a specific user by his token'
     },
   },
   {
