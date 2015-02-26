@@ -18,14 +18,17 @@ class HabitHandler
 
   @get = (request, reply) ->
     user = User.findOne({token: request.headers.authorization}).exec()
-    user.then (user) ->
-      habit = Habit.findOne({_id: request.params.habitId, user: user}).exec()
-      habit.then (habit) ->
-        result = {
-          text: habit.text,
-          createdAt: habit.createdAt
-        }
-        reply(result).code(200)
+    When(user).then (user) ->
+      if user is null
+        reply({message: 'Wrong token!'}).code(401)
+      else
+        habit = Habit.findOne({_id: request.params.habitId, user: user}).exec()
+        habit.then (habit) ->
+          result = {
+            text: habit.text,
+            createdAt: habit.createdAt
+          }
+          reply(result).code(200)
 
   @create = (request, reply) ->
     user = User.findOne({token: request.headers.authorization}).populate('habits').exec()
@@ -41,8 +44,8 @@ class HabitHandler
 
         user.habits.push habit
         user.save()
-
-        reply(user).code(200)
+        When(user, habit).then (user, habit) ->
+          reply(user.habits).code(201)
 
   @increment = (request, reply) ->
     user = User.findOne({token: request.headers.authorization}).populate('stats').exec()
@@ -76,7 +79,6 @@ class HabitHandler
 
         habit = Habit.findOne({_id: request.params.habitId, user: user}).exec()
         When(habit).then (habit) ->
-          console.dir habit
           if habit
             if data.text
               habit.text = data.text
