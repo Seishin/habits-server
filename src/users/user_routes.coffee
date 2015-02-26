@@ -13,12 +13,14 @@ routes = [
         params: {
           userId: Joi.string().required()
         }
-      }
-    }
+      },
+      tags: ['api'],
+      description: 'Get a specific user by his userId'
+    },
   },
   {
     method: 'POST',
-    path: '/users/create',
+    path: '/users',
     handler: (request, reply) ->
       UserHandler.create(request, reply)
     ,
@@ -30,7 +32,9 @@ routes = [
           profileAvatar: Joi.string().optional(),
           name: Joi.string().optional()
         }
-      }
+      },
+      tags: ['api'],
+      description: 'Create a new user'
     }
   },
   {
@@ -45,7 +49,9 @@ routes = [
           email: Joi.string().required(),
           password: Joi.string().required()
         }
-      }
+      },
+      tags: ['api'],
+      description: 'Login user'
     }
   }
 ]

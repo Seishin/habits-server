@@ -7,6 +7,11 @@ routes = [
     path: '/habits/all',
     handler: (request, reply) ->
       HabitHandler.getAll(request, reply)
+    ,
+    config: {
+      tags: ['api'],
+      description: 'Get all habits for user'
+    }
   },
   {
     method: 'GET',
@@ -19,7 +24,9 @@ routes = [
         params: {
           habitId: Joi.string().required()
         }
-      }
+      },
+      tags: ['api'],
+      description: 'Get a specific user\'s habit by its habitId'
     }
   },
   {
@@ -33,7 +40,9 @@ routes = [
         payload: {
           text: Joi.string().required()
         }
-      }
+      },
+      tags: ['api'],
+      description: 'Creating a new habit for a user'
     }
   },
   {
@@ -47,7 +56,9 @@ routes = [
         params: {
           habitId: Joi.string().required()
         }
-      }
+      },
+      tags: ['api'],
+      description: 'Incrementing a user\'s habit'
     }
   },
   {
@@ -64,7 +75,9 @@ routes = [
         payload: {
           text: Joi.string().optional()
         }
-      }
+      },
+      tags: ['api'],
+      description: 'Update a specific user\'s habit'
     }
   },
   {
@@ -78,7 +91,9 @@ routes = [
         params: {
           habitId: Joi.string().required()
         }
-      }
+      },
+      tags: ['api'],
+      description: 'Delete a specific user\'s habit.'
     }
   }
 ]

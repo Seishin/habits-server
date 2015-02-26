@@ -8,7 +8,7 @@ var User = require('../lib/models').User
 function createUser (payload) {
   var opts = {
     method: 'POST',
-    url: '/users/create',
+    url: '/users',
     payload: payload
   }
 
