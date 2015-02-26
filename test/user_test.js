@@ -58,13 +58,17 @@ describe ('Users', function () {
   it ('Should create user', function (done) {
     var data = {
       email: "test@test.co",
-      password: "123"
+      password: "123",
+      name: "test_name"
     }
     response = createUser(data)
     response.then (function (response) {
       var payload = JSON.parse(response.payload)
       response.statusCode.should.equal(201)
+      payload.should.have.property("id")
       payload.should.have.property("token")
+      payload.should.have.property("email")
+      payload.should.have.property("name")
       done()
     })
   })
@@ -72,7 +76,8 @@ describe ('Users', function () {
   it('Should not create user (existing email)', function (done) {
     var data = {
       email: "test@test.co",
-      password: "123"
+      password: "123",
+      name: "test_name"
     }
     response_1 = createUser(data)
     response_1.then (function (response) {
@@ -92,6 +97,7 @@ describe ('Users', function () {
     var data = {
       email: 'test@test.co',
       password: '123',
+      name: "test_name"
     }
 
     createUserResponse = createUser(data)
@@ -113,6 +119,7 @@ describe ('Users', function () {
     var data = {
         email: 'test@test.co',
         password: '123',
+        name: "test_name"
       }
 
       createUserResponse = createUser(data)
@@ -138,6 +145,7 @@ describe ('Users', function () {
     var data = {
         email: 'test@test.co',
         password: '123',
+        name: "test_name"
       }
 
       createUserResponse = createUser(data)
@@ -157,17 +165,23 @@ describe ('Users', function () {
   it('Should login user', function(done) {
     var data = {
       email: "test@test.co",
-      password: "123"
+      password: "123",
+      name: "test_name"
     }
 
     var user = new User(data)
     user.save()
     When(user).then (function(user) { 
+      delete data.name
       response = loginUser(data)
       response.then (function (response) {
         var payload = JSON.parse(response.payload)
         response.statusCode.should.equal(202)
+        payload.should.have.property("id")
         payload.should.have.property("token")
+        payload.should.have.property("email")
+        payload.should.have.property("name")
+
         done()
       })
     })
@@ -176,7 +190,7 @@ describe ('Users', function () {
   it('Should not login user (wrong email)', function(done) {
     var data = {
       email: "wrong@test.co",
-      password: "123"
+      password: "123",
     }
 
     var user = new User({email: "test@test.co", password: "123"})
@@ -193,7 +207,7 @@ describe ('Users', function () {
   it('Should not login user (wrong password)', function(done) {
     var data = {
       email: "test@test.co",
-      password: "123"
+      password: "123",
     }
 
     var user = new User({email: "test@test.co", password: "wrong_password"})
@@ -206,6 +220,4 @@ describe ('Users', function () {
       })
     })
   })
-
-
 })
