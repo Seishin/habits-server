@@ -25,6 +25,35 @@ function loginUser (payload) {
   return Server.injectThen(opts)
 }
 
+function getUserById (userId) {
+  var opts = {
+    method: 'GET',
+    url: '/users/' + userId
+  }
+
+  return Server.injectThen(opts)
+}
+
+function getUserByToken (token) {
+  var opts = {
+    method: 'GET',
+    url: '/users',
+    headers: {authorization: token}
+  }
+
+  return Server.injectThen(opts)
+}
+
+function getUserStats (token) {
+  var opts = {
+    method: 'GET',
+    url: '/users/stats',
+    headers: {authorization: token}
+  }
+
+  return Server.injectThen(opts)
+}
+
 describe ('Users', function () {
   it ('Should create user', function (done) {
     var data = {
@@ -57,6 +86,72 @@ describe ('Users', function () {
         done()
       })
     })
+  })
+
+  it ('Should get user\'s stats', function (done) {
+    var data = {
+      email: 'test@test.co',
+      password: '123',
+    }
+
+    createUserResponse = createUser(data)
+    createUserResponse.then (function (response) {
+      response.statusCode.should.equal(201)
+      var payload = JSON.parse(response.payload)
+      payload.should.have.property('token')
+
+      getStatsResponse = getUserStats(payload.token)
+      getStatsResponse.then (function (response) {
+        response.statusCode.should.equal(200)
+        done()
+      })
+    })
+
+  })
+
+  it ('Should get user\'s by userId', function (done) {
+    var data = {
+        email: 'test@test.co',
+        password: '123',
+      }
+
+      createUserResponse = createUser(data)
+      createUserResponse.then (function (response) {
+        response.statusCode.should.equal(201)
+        var payload = JSON.parse(response.payload)
+        payload.should.have.property('token')
+        
+        user = User.findOne({token: payload.token}).exec()
+        When(user).then (function (user) {
+          response = getUserById(user._id)
+          response.then (function (response) {
+            response.statusCode.should.equal(200)
+            payload = JSON.parse(response.payload)
+            payload.email.should.equal(data.email)
+            done()
+          })
+        })
+      })
+  })
+
+  it ('Should get user\'s by token', function (done) {
+    var data = {
+        email: 'test@test.co',
+        password: '123',
+      }
+
+      createUserResponse = createUser(data)
+      createUserResponse.then (function (response) {
+        response.statusCode.should.equal(201)
+        var payload = JSON.parse(response.payload)
+        payload.should.have.property('token')
+        
+        response = getUserByToken(payload.token)
+        response.then (function (response) {
+          response.statusCode.should.equal(200)
+          done()
+        })
+      })
   })
 
   it('Should login user', function(done) {

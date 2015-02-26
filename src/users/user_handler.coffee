@@ -7,7 +7,10 @@ Token = require 'random-token'
 
 class UserHandler
   @get = (request, reply) ->
-    user = User.findOne({_id: request.params.userId}).exec()
+    if request.params.userId
+      user = User.findOne({_id: request.params.userId}).exec()
+    else
+      user = User.findOne({token: request.headers.authorization}).exec()
 
     When(user).then (user) ->
       if user is null
@@ -20,6 +23,11 @@ class UserHandler
             email: user.email,
             name: user.name
           }).code(200)
+
+  @getStats = (request, reply) ->
+    user = User.findOne({token: request.headers.authorization}).populate('stats').exec()
+    When(user).then (user) ->
+      reply(user.stats).code(200)
 
   @create = (request, reply) ->
     data = request.payload
@@ -35,8 +43,8 @@ class UserHandler
         user.token = Token(16)
 
         user.save()
-
-        reply({token: user.token}).code(201)
+        When.join(user, stats).then (result) ->
+          reply({token: result[0].token}).code(201)
       else if user.email is data.email
         reply({message: 'The user already exists!'}).code(417)
 
