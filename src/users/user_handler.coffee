@@ -27,7 +27,10 @@ class UserHandler
   @getStats = (request, reply) ->
     user = User.findOne({token: request.headers.authorization}).populate('stats').exec()
     When(user).then (user) ->
-      reply(user.stats).code(200)
+      if user is null
+        reply({message: 'Wrong or not available token.'}).code(401)
+      else
+        reply(user.stats).code(200)
 
   @create = (request, reply) ->
     data = request.payload
