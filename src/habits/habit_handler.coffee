@@ -64,9 +64,9 @@ class HabitHandler
           habit.counters.push counter
           habit.save()
 
-          StatsUtils.updateStatsByHabit(habit)
-
-          reply({message: "Success!"}).code(200)
+          StatsUtils.updateStatsByHabit(habit, (done) ->
+            reply({message: "Success!"}).code(200)
+          )
 
   @update = (request, reply) ->
     user = User.findOne({token: request.headers.authorization}).exec()

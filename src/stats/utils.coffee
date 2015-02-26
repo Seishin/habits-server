@@ -1,4 +1,5 @@
 Moment = require 'moment'
+When = require 'when'
 
 Models = require '../models'
 User = Models.User
@@ -12,7 +13,7 @@ class StatsUtils
   @expToNextLvl = (lvl) ->
     return 25 * lvl * (1 + lvl)
 
-  @updateStatsByHabit = (habit) ->
+  @updateStatsByHabit = (habit, done) ->
     user = User.findOne({_id: habit.user}).exec()
     user.then (user) ->
       today = Moment(new Date()).format('YYYY-MM-DD')
@@ -32,6 +33,8 @@ class StatsUtils
           stats.lvl += 1
 
         stats.save()
+        When(stats).then (stats) ->
+          done()
 
   expGainByTimes = (times) ->
     return Math.floor(defaultExpPerTask / times)
