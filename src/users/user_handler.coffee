@@ -4,6 +4,7 @@ UserStats = Models.UserStats
 
 When = require 'when'
 Token = require 'random-token'
+StatsUtils = require('../stats/utils').StatsUtils
 
 class UserHandler
   @get = (request, reply) ->
@@ -30,7 +31,9 @@ class UserHandler
       if user is null
         reply({message: 'Wrong or not available token.'}).code(401)
       else
-        reply(user.stats).code(200)
+        statsObj = user.stats.toObject()
+        statsObj.nextLvlExp = StatsUtils.expToNextLvl statsObj.lvl
+        reply(statsObj).code(200)
 
   @create = (request, reply) ->
     data = request.payload
