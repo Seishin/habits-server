@@ -7,7 +7,9 @@ Routes = require('./routes').routes
 Mongoose.connect(Config.mongoURI)
 
 server = new Hapi.Server()
-server.connection {port: 3000, routes: {cors: true}}
+server.connection {
+  port: process.env.PORT || 8080
+}
 
 server.register {
   register: require 'hapi-swagger',
