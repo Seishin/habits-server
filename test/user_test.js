@@ -109,6 +109,12 @@ describe ('Users', function () {
       getStatsResponse = getUserStats(payload.token)
       getStatsResponse.then (function (response) {
         response.statusCode.should.equal(200)
+        payload = JSON.parse(response.payload)
+        payload.should.have.property("hp")
+        payload.should.have.property("exp")
+        payload.should.have.property("gold")
+        payload.should.have.property("lvl")
+        payload.should.have.property("nextLvlExp")
         done()
       })
     })
