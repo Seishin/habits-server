@@ -351,7 +351,7 @@ describe ('Habits', function () {
           When.join(preUserStats, postUserStats).then (function (stats) {
             assert.isAbove(stats[1].exp, stats[0].exp, 'Post exp > pre exp')
             assert.isAbove(stats[1].gold, stats[0].gold, 'Post gold > pre gold')
-            assert.isBelow(stats[1].hp, stats[0].hp, 'Post HP == pre HP')
+            assert.equal(stats[1].hp, stats[0].hp, 'Post HP == pre HP')
             stats[1].alive.should.equal(true)
 
             done()

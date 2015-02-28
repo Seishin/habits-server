@@ -10,7 +10,6 @@ UserStats = Models.UserStats
 class StatsUtils
   defaultExpPerTask = 30
   defaultGoldPerTask = 10
-  defaultHPPerTask = 10
 
   @expToNextLvl = (lvl) ->
     return 25 * lvl * (1 + lvl)
@@ -34,7 +33,6 @@ class StatsUtils
         if stats.exp >= StatsUtils.expToNextLvl stats.lvl
           stats.lvl += 1
 
-        stats.hp -= defaultHPPerTask
         if stats.hp <= 0
           stats.hp = 0
           stats.alive = false
