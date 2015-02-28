@@ -205,6 +205,8 @@ describe ('Users', function () {
       response = loginUser(data)
       response.then (function (response) {
         response.statusCode.should.equal(404)
+        payload = JSON.parse(response.payload)
+        payload.should.have.property("message")
         done()
       })
     })
@@ -222,6 +224,8 @@ describe ('Users', function () {
       response = loginUser(data)
       response.then (function (response) {
         response.statusCode.should.equal(401)
+        payload = JSON.parse(response.payload)
+        payload.should.have.property("message")
         done()
       })
     })
