@@ -8,7 +8,7 @@ UserStatsUtils = require('../user_stats/utils').UserStatsUtils
 
 class HabitHandler
   @getAll = (request, reply) ->
-    habits = Habit.find({user: request.query.userId}).exec()
+    habits = Habit.find({user: request.query.userId}, {"createdAt": -1}).exec()
 
     When(habits).then (habits) ->
       reply({habits: habits}).code(200)
