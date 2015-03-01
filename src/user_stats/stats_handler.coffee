@@ -11,7 +11,8 @@ class UserStatsHandler
 
     When(user).then (user) ->
       statsObj = user.stats.toObject()
-      statsObj.nextLvlExp = UserStatsUtils.expToNextLvl statsObj.lvl
+      statsObj.minLvlExp = UserStatsUtils.expToNextLvl(statsObj.lvl - 1)
+      statsObj.maxLvlExp = UserStatsUtils.expToNextLvl statsObj.lvl
       reply(statsObj).code(200)
     
 module.exports.UserStatsHandler = UserStatsHandler
