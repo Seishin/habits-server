@@ -1,7 +1,11 @@
 {
   "name": "Habits",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Simple and interactive habits and to-do gamified service.",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Seishin/habits-server.git"
+  },
   "author": "Atanas Dimitrov <atanas@naughtyspirit.co>",
   "main": "lib/index.js",
   "dependencies": {
