@@ -23,7 +23,7 @@ server.register {
     console.log err
 
 server.ext('onPreHandler', (request, reply) ->
-  Validation.validateToken(request, reply)
+  Validation.validateRequest(request, reply)
 )
 
 
