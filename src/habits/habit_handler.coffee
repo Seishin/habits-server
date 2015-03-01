@@ -43,7 +43,7 @@ class HabitHandler
       habit.save()
 
       UserStatsUtils.updateStatsByHabit(habit, (done) ->
-        reply({message: "Success!"}).code(200)
+        reply().code(200)
       )
 
   @update = (request, reply) ->
