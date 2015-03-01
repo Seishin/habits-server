@@ -11,7 +11,7 @@ class HabitHandler
     habits = Habit.find({user: request.query.userId}).exec()
 
     When(habits).then (habits) ->
-      reply(habits).code(200)
+      reply({habits: habits}).code(200)
 
   @get = (request, reply) ->
     habit = Habit.findOne({_id: request.params.habitId, user: request.query.userId}).exec()
