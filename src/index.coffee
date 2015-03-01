@@ -3,6 +3,7 @@ Mongoose = require 'mongoose'
 
 Config = require './config'
 Routes = require('./routes').routes
+Validation = require './utils/validations'
 
 Mongoose.connect(Config.mongoURI)
 
@@ -20,6 +21,11 @@ server.register {
 }, (err) ->
   if err
     console.log err
+
+server.ext('onPreHandler', (request, reply) ->
+  Validation.validateToken(request, reply)
+)
+
 
 server.route Routes
 

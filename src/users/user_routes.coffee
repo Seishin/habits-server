@@ -30,17 +30,6 @@ routes = [
     },
   },
   {
-    method: 'GET',
-    path: '/users/stats',
-    handler: (request, reply) ->
-      UserHandler.getStats(request, reply)
-    ,
-    config: {
-      tags: ['api'],
-      description: 'Get user\'s own stats'
-    }
-  },
-  {
     method: 'POST',
     path: '/users',
     handler: (request, reply) ->

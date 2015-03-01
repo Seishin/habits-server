@@ -25,63 +25,63 @@ function createUser () {
   return user
 }
 
-function createHabit (payload, headers) {
+function createHabit (userId, payload, token) {
   var opts = {
     method: 'POST',
-    url: '/habits',
+    url: '/habits/?userId=' + userId,
     payload: payload,
-    headers: headers
+    headers: {authorization: token} 
   }
 
   return Server.injectThen (opts)
 }
 
-function getHabit (id, headers) {
+function getHabit (userId, habitId, token) {
   var opts = {
     method: 'GET',
-    url: '/habits/' + id,
-    headers: headers
+    url: '/habits/' + habitId + '/?userId=' + userId,
+    headers: {authorization: token} 
   }
 
   return Server.injectThen (opts)
 }
 
-function getAllHabit (headers) {
+function getAllHabit (userId, token) {
   var opts = {
     method: 'GET',
-    url: '/habits/all',
-    headers: headers
+    url: '/habits/all/?userId=' + userId,
+    headers: {authorization: token} 
   }
 
   return Server.injectThen (opts)
 }
 
-function updateHabit (id, payload, headers) {
+function updateHabit (userId, habitId, payload, token) {
   var opts = {
     method: 'PUT',
-    url: '/habits/' + id,
-    headers: headers,
+    url: '/habits/' + habitId + '/?userId=' + userId,
+    headers: {authorization: token},
     payload: payload
   }
 
   return Server.injectThen (opts)
 }
 
-function incrementHabit (id, headers) {
+function incrementHabit (userId, habitId, token) {
   var opts = {
     method: 'POST',
-    url: '/habits/increment/' + id,
-    headers: headers
+    url: '/habits/increment/' + habitId + '/?userId=' + userId,
+    headers: {authorization: token} 
   }
 
   return Server.injectThen (opts)
 }
 
-function deleteHabit (id, headers) {
+function deleteHabit (userId, habitId, token) {
   var opts = {
     method: 'DELETE',
-    url: '/habits/' + id,
-    headers: headers,
+    url: '/habits/' + habitId + '/?userId=' + userId,
+    headers: {authorization: token},
   }
 
   return Server.injectThen (opts)
@@ -94,7 +94,7 @@ describe ('Habits', function () {
     }
 
     When(createUser()).then (function (user) {
-      response = createHabit(data, {authorization: user.token})
+      response = createHabit(user._id, data, user.token)
       response.then (function (response) {
         response.statusCode.should.equal(201)
         done()
@@ -108,7 +108,7 @@ describe ('Habits', function () {
     }
 
     When(createUser()).then (function (user) {
-      response = createHabit(data, null)
+      response = createHabit(user._id, data, null)
       response.then (function (response) {
         response.statusCode.should.equal(401)
         done()
@@ -121,12 +121,8 @@ describe ('Habits', function () {
       text: "Meditation"
     }
 
-    var headers = {
-      authorization: "wrong_token"
-    }
-
     When(createUser()).then (function (user) {
-      response = createHabit(data, headers)
+      response = createHabit(user._id, data, "wrong_token")
       response.then (function (response) {
         response.statusCode.should.equal(401)
         done()
@@ -140,11 +136,11 @@ describe ('Habits', function () {
     } 
 
     When(createUser()).then (function (user) {
-      createHabitResponse = createHabit(data, {authorization: user.token})
+      createHabitResponse = createHabit(user._id, data, user.token)
       createHabitResponse.then (function (response) {
         response.statusCode.should.equal(201)
         
-        getResponse = getAllHabit({authorization: user.token})
+        getResponse = getAllHabit(user._id, user.token)
         getResponse.then (function (response) {
           var payload = JSON.parse(response.payload)
           response.statusCode.should.equal(200)
@@ -161,13 +157,12 @@ describe ('Habits', function () {
     } 
 
     When(createUser()).then (function (user) {
-      createHabitResponse = createHabit(data, {authorization: user.token})
+      createHabitResponse = createHabit(user._id, data, user.token)
       createHabitResponse.then (function (response) {
         response.statusCode.should.equal(201)
-        var payload = JSON.parse(response.payload)
-        payload.should.have.length(1)
+        payload = JSON.parse(response.payload)
         
-        getResponse = getHabit(payload[0]._id, {authorization: user.token})
+        getResponse = getHabit(user._id, payload._id, user.token)
         getResponse.then (function (response) {
           response.statusCode.should.equal(200)
           done()
@@ -182,13 +177,12 @@ describe ('Habits', function () {
     } 
 
     When(createUser()).then (function (user) {
-      createHabitResponse = createHabit(data, {authorization: user.token})
+      createHabitResponse = createHabit(user._id, data, user.token)
       createHabitResponse.then (function (response) {
         response.statusCode.should.equal(201)
-        var payload = JSON.parse(response.payload)
-        payload.should.have.length(1)
+        payload = JSON.parse(response.payload)
         
-        getResponse = getHabit(payload[0]._id, {authorization: null})
+        getResponse = getHabit(user._id, payload._id, null)
         getResponse.then (function (response) {
           response.statusCode.should.equal(401)
           done()
@@ -203,13 +197,12 @@ describe ('Habits', function () {
     } 
 
     When(createUser()).then (function (user) {
-      createHabitResponse = createHabit(data, {authorization: user.token})
+      createHabitResponse = createHabit(user._id, data, user.token)
       createHabitResponse.then (function (response) {
         response.statusCode.should.equal(201)
         var payload = JSON.parse(response.payload)
-        payload.should.have.length(1)
         
-        getResponse = getHabit(payload[0]._id, {authorization: "wrong_token"})
+        getResponse = getHabit(user._id, payload._id, "wrong_token")
         getResponse.then (function (response) {
           response.statusCode.should.equal(401)
           done()
@@ -224,16 +217,15 @@ describe ('Habits', function () {
     } 
 
     When(createUser()).then (function (user) {
-      createHabitResponse = createHabit(data, {authorization: user.token})
+      createHabitResponse = createHabit(user._id, data, user.token)
       createHabitResponse.then (function (response) {
         response.statusCode.should.equal(201)
         var payload = JSON.parse(response.payload)
-        payload.should.have.length(1)
         
         var newData = {
           text: "Reading a book"
         }
-        getResponse = updateHabit(payload[0]._id, newData, {authorization: user.token})
+        getResponse = updateHabit(payload.user, payload._id, newData, user.token)
         getResponse.then (function (response) {
           var payload = JSON.parse(response.payload)
           response.statusCode.should.equal(200)
@@ -251,12 +243,12 @@ describe ('Habits', function () {
     } 
 
     When(createUser()).then (function (user) {
-      createHabitResponse = createHabit(data, {authorization: user.token})
+      createHabitResponse = createHabit(user._id, data, user.token)
       createHabitResponse.then (function (response) {
         var payload = JSON.parse(response.payload)
         response.statusCode.should.equal(201)
         
-        getResponse = deleteHabit(payload[0]._id, {authorization: user.token})
+        getResponse = deleteHabit(payload.user, payload._id, user.token)
         getResponse.then (function (response) {
           response.statusCode.should.equal(200)
           done()
@@ -271,13 +263,12 @@ describe ('Habits', function () {
     } 
 
     When(createUser()).then (function (user) {
-      createHabitResponse = createHabit(data, {authorization: user.token})
+      createHabitResponse = createHabit(user._id, data, user.token)
       createHabitResponse.then (function (response) {
         response.statusCode.should.equal(201)
         var payload = JSON.parse(response.payload)
-        payload.should.have.length(1)
 
-        incResponse = incrementHabit(payload[0]._id, {authorization: user.token})
+        incResponse = incrementHabit(payload.user, payload._id, user.token)
         incResponse.then (function (response) {
           response.statusCode.should.equal(200)
           done()
@@ -292,13 +283,12 @@ describe ('Habits', function () {
     } 
 
     When(createUser()).then (function (user) {
-      createHabitResponse = createHabit(data, {authorization: user.token})
+      createHabitResponse = createHabit(user._id, data, user.token)
       createHabitResponse.then (function (response) {
         response.statusCode.should.equal(201)
         var payload = JSON.parse(response.payload)
-        payload.should.have.length(1)
 
-        incResponse = incrementHabit(payload[0]._id, {authorization: null})
+        incResponse = incrementHabit(payload.user, payload._id, null)
         incResponse.then (function (response) {
           response.statusCode.should.equal(401)
           done()
@@ -313,13 +303,12 @@ describe ('Habits', function () {
     } 
 
     When(createUser()).then (function (user) {
-      createHabitResponse = createHabit(data, {authorization: user.token})
+      createHabitResponse = createHabit(user._id, data, user.token)
       createHabitResponse.then (function (response) {
         response.statusCode.should.equal(201)
         var payload = JSON.parse(response.payload)
-        payload.should.have.length(1)
 
-        incResponse = incrementHabit(payload[0]._id, {authorization: "wrong_token"})
+        incResponse = incrementHabit(payload.user, payload._id, "wrong_token")
         incResponse.then (function (response) {
           response.statusCode.should.equal(401)
           done()
@@ -334,15 +323,14 @@ describe ('Habits', function () {
     } 
 
     When(createUser()).then (function (user) {
-      createHabitResponse = createHabit(data, {authorization: user.token})
+      createHabitResponse = createHabit(user._id, data, user.token)
       createHabitResponse.then (function (response) {
         var preUserStats = UserStats.findOne({_id: user.stats}).exec()
 
         response.statusCode.should.equal(201)
         var payload = JSON.parse(response.payload)
-        payload.should.have.length(1)
 
-        incResponse = incrementHabit(payload[0]._id, {authorization: user.token})
+        incResponse = incrementHabit(payload.user, payload._id, user.token)
         incResponse.then (function (response) {
           response.statusCode.should.equal(200)
 

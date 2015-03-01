@@ -4,23 +4,31 @@ Joi = require 'joi'
 routes = [
   {
     method: 'GET',
-    path: '/habits/all',
+    path: '/habits/all/',
     handler: (request, reply) ->
       HabitHandler.getAll(request, reply)
     ,
     config: {
+      validate: {
+        query: {
+          userId: Joi.string().required()
+        }
+      },
       tags: ['api'],
       description: 'Get all habits for user'
     }
   },
   {
     method: 'GET',
-    path: '/habits/{habitId}',
+    path: '/habits/{habitId}/',
     handler: (request, reply) ->
       HabitHandler.get(request, reply)
     ,
     config: {
       validate: {
+        query: {
+          userId: Joi.string().required()
+        },
         params: {
           habitId: Joi.string().required()
         }
@@ -31,12 +39,15 @@ routes = [
   },
   {
     method: 'POST',
-    path: '/habits',
+    path: '/habits/',
     handler: (request, reply) ->
       HabitHandler.create(request, reply)
     ,
     config: {
       validate: {
+        query: {
+          userId: Joi.string().required()
+        },
         payload: {
           text: Joi.string().required()
         }
@@ -47,12 +58,15 @@ routes = [
   },
   {
     method: 'POST',
-    path: '/habits/increment/{habitId}',
+    path: '/habits/increment/{habitId}/',
     handler: (request, reply) ->
       HabitHandler.increment(request, reply)
     ,
     config: {
       validate: {
+        query: {
+          userId: Joi.string().required()
+        },
         params: {
           habitId: Joi.string().required()
         }
@@ -63,12 +77,15 @@ routes = [
   },
   {
     method: 'PUT',
-    path: '/habits/{habitId}',
+    path: '/habits/{habitId}/',
     handler: (request, reply) ->
       HabitHandler.update(request, reply)
     ,
     config: {
       validate: {
+        query: {
+          userId: Joi.string().required()
+        },
         params: {
           habitId: Joi.string().required()
         },
@@ -82,12 +99,15 @@ routes = [
   },
   {
     method: 'DELETE',
-    path: '/habits/{habitId}',
+    path: '/habits/{habitId}/',
     handler: (request, reply) ->
       HabitHandler.delete(request, reply)
     ,
     config: {
       validate: {
+        query: {
+          userId: Joi.string().required()
+        },
         params: {
           habitId: Joi.string().required()
         }

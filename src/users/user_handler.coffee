@@ -10,30 +10,15 @@ class UserHandler
   @get = (request, reply) ->
     if request.params.userId
       user = User.findOne({_id: request.params.userId}).exec()
-    else
-      user = User.findOne({token: request.headers.authorization}).exec()
 
     When(user).then (user) ->
-      if user is null
-        reply({message: 'User with this userId wasn\'t found!'}).code(404)
+      if user.token is request.headers.authorization
+        reply(user).code(200)
       else
-        if user.token is request.headers.authorization
-          reply(user).code(200)
-        else
-          reply({
-            email: user.email,
-            name: user.name
-          }).code(200)
-
-  @getStats = (request, reply) ->
-    user = User.findOne({token: request.headers.authorization}).populate('stats').exec()
-    When(user).then (user) ->
-      if user is null
-        reply({message: 'Wrong or not available token.'}).code(401)
-      else
-        statsObj = user.stats.toObject()
-        statsObj.nextLvlExp = StatsUtils.expToNextLvl statsObj.lvl
-        reply(statsObj).code(200)
+        reply({
+          email: user.email,
+          name: user.name
+        }).code(200)
 
   @create = (request, reply) ->
     data = request.payload

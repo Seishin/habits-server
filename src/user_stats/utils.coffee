@@ -7,7 +7,7 @@ Habit = Models.Habit
 Counter = Models.Counter
 UserStats = Models.UserStats
 
-class StatsUtils
+class UserStatsUtils
   defaultExpPerTask = 30
   defaultGoldPerTask = 10
 
@@ -30,7 +30,7 @@ class StatsUtils
         exp = expGainByTimes todayHabitsCount
         stats.exp += exp
 
-        if stats.exp >= StatsUtils.expToNextLvl stats.lvl
+        if stats.exp >= UserStatsUtils.expToNextLvl stats.lvl
           stats.lvl += 1
 
         if stats.hp <= 0
@@ -54,4 +54,4 @@ class StatsUtils
     else
       return Math.floor(defaultGoldPerTask / times)
 
-module.exports.StatsUtils = StatsUtils
+module.exports.UserStatsUtils = UserStatsUtils
