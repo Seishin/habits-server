@@ -35,13 +35,10 @@ class UserHandler
 
         user.save()
         When.join(user, stats).then (result) ->
-          reply({
-            id: result[0]._id,
-            token: result[0].token,
-            name: result[0].name,
-            email: result[0].email,
-            profileAvatar: result[0].profileAvatar
-          }).code(201)
+          user = result[0].toObject()
+          delete user.password
+          
+          reply(user).code(201)
       else if user.email is data.email
         reply({message: 'The user already exists!'}).code(417)
 
@@ -57,12 +54,11 @@ class UserHandler
       else
         user.token = Token(16)
         user.save()
-        reply({
-          id: user._id,
-          token: user.token,
-          name: user.name,
-          email: user.email,
-          profileAvatar: user.profileAvatar
-        }).code(202)
+
+        When(user).then (user) ->
+          user = user.toObject()
+          delete user.password
+          
+          reply(user).code(202)
    
 module.exports.UserHandler = UserHandler

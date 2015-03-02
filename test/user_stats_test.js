@@ -47,7 +47,7 @@ describe ('UserStats', function() {
       var payload = JSON.parse(response.payload)
       payload.should.have.property('token')
 
-      getStatsResponse = getUserStats(payload.token, payload.id)
+      getStatsResponse = getUserStats(payload.token, payload._id)
       getStatsResponse.then (function (response) {
         response.statusCode.should.equal(200)
         payload = JSON.parse(response.payload)

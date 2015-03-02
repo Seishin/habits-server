@@ -51,7 +51,7 @@ describe ('Users', function () {
     response.then (function (response) {
       var payload = JSON.parse(response.payload)
       response.statusCode.should.equal(201)
-      payload.should.have.property("id")
+      payload.should.have.property("_id")
       payload.should.have.property("token")
       payload.should.have.property("email")
       payload.should.have.property("name")
@@ -120,7 +120,7 @@ describe ('Users', function () {
       response.then (function (response) {
         var payload = JSON.parse(response.payload)
         response.statusCode.should.equal(202)
-        payload.should.have.property("id")
+        payload.should.have.property("_id")
         payload.should.have.property("token")
         payload.should.have.property("email")
         payload.should.have.property("name")
