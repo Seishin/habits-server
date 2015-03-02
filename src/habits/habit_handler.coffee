@@ -4,6 +4,7 @@ Habit = Models.Habit
 Counter = Models.HabitsCounter
 
 When = require 'when'
+Moment = require 'moment'
 UserStatsUtils = require('../user_stats/utils').UserStatsUtils
 
 class HabitHandler
@@ -36,14 +37,6 @@ class HabitHandler
       counter.save()
       
       habit.counters.push counter
-      c = habit.counters.length
-      if c < 3
-        habit.state = 0
-      else if c >= 3 and c < 6
-        habit.state = 1
-      else
-        habit.state = 2
-
       habit.save()
 
       UserStatsUtils.updateStatsByHabit(habit, (done) ->
@@ -77,10 +70,18 @@ class HabitHandler
 
   getState = (habit) ->
     habit = habit.toObject()
-    c = habit.counters.length
-    if c < 3
+
+    today = Moment(new Date()).format('YYYY-MM-DD')
+    todayHabitsCount = 0
+
+    for counter in habit.counters
+      date = Moment(new Date(counter.createdAt)).format('YYYY-MM-DD')
+      if date is today
+        todayHabitsCount += 1
+
+    if todayHabitsCount < 3
       habit.state = 0
-    else if c >= 3 and c < 6
+    else if todayHabitsCount >= 3 and c < 6
       habit.state = 1
     else
       habit.state = 2
