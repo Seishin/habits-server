@@ -16,7 +16,6 @@ userSchema = new Schema
 habitSchema = new Schema
   text: String
   counters: [{type: Schema.Types.ObjectId, ref: 'HabitsCounter'}]
-  state: {type: Number, default: 0}
   user: {type: Schema.Types.ObjectId, ref: 'User'}
 
 dailyTask = new Schema

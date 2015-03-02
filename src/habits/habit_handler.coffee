@@ -16,7 +16,7 @@ class HabitHandler
   @get = (request, reply) ->
     habit = Habit.findOne({_id: request.params.habitId, user: request.query.userId}).exec()
     habit.then (habit) ->
-      reply(habit).code(200)
+      reply(getState habit).code(200)
 
   @create = (request, reply) ->
     habit = new Habit()
@@ -47,7 +47,7 @@ class HabitHandler
       habit.save()
 
       UserStatsUtils.updateStatsByHabit(habit, (done) ->
-        reply(habit).code(200)
+        reply(getState habit).code(200)
       )
 
   @update = (request, reply) ->
@@ -74,5 +74,18 @@ class HabitHandler
     ).exec()
 
     Counter.remove({habit: request.params.habitId}).exec()
+
+  getState = (habit) ->
+    habit = habit.toObject()
+    c = habit.counters.length
+    if c < 3
+      habit.state = 0
+    else if c >= 3 and c < 6
+      habit.state = 1
+    else
+      habit.state = 2
+
+    return habit
+
 
 module.exports.HabitHandler = HabitHandler

@@ -90,8 +90,7 @@ function deleteHabit (userId, habitId, token) {
 describe ('Habits', function () {
   it ('Should create habit', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     }
 
     When(createUser()).then (function (user) {
@@ -105,8 +104,7 @@ describe ('Habits', function () {
 
   it ('Should not create habit (missing token)', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     }
 
     When(createUser()).then (function (user) {
@@ -120,8 +118,7 @@ describe ('Habits', function () {
 
   it ('Should not create habit (wrong token)', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     }
 
     When(createUser()).then (function (user) {
@@ -135,8 +132,7 @@ describe ('Habits', function () {
 
   it ('Should get all habits', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     } 
 
     When(createUser()).then (function (user) {
@@ -157,8 +153,7 @@ describe ('Habits', function () {
 
   it ('Should get habit', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     } 
 
     When(createUser()).then (function (user) {
@@ -184,8 +179,7 @@ describe ('Habits', function () {
 
   it ('Should not get habit (missing token)', function (done) {
       var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     } 
 
     When(createUser()).then (function (user) {
@@ -205,8 +199,7 @@ describe ('Habits', function () {
 
   it ('Should not get habit (wrong token)', function (done) {
       var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     } 
 
     When(createUser()).then (function (user) {
@@ -226,8 +219,7 @@ describe ('Habits', function () {
 
   it ('Should update habit', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     } 
 
     When(createUser()).then (function (user) {
@@ -254,8 +246,7 @@ describe ('Habits', function () {
 
   it ('Should delete habit', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     } 
 
     When(createUser()).then (function (user) {
@@ -275,8 +266,7 @@ describe ('Habits', function () {
 
   it ('Should increment habit', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     } 
 
     When(createUser()).then (function (user) {
@@ -303,8 +293,7 @@ describe ('Habits', function () {
   
   it ('Should not increment habit (missing token)', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     } 
 
     When(createUser()).then (function (user) {
@@ -324,8 +313,7 @@ describe ('Habits', function () {
 
   it ('Should not increment habit (wrong token)', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     } 
 
     When(createUser()).then (function (user) {
@@ -345,8 +333,7 @@ describe ('Habits', function () {
 
   it ('Should increment and update user stats', function (done) {
     var data = {
-      text: "Meditation",
-      state: 0
+      text: "Meditation"
     } 
 
     When(createUser()).then (function (user) {
