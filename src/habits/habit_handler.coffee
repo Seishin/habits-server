@@ -81,12 +81,11 @@ class HabitHandler
 
     if todayHabitsCount < 3
       habit.state = 0
-    else if todayHabitsCount >= 3 and c < 6
+    else if todayHabitsCount >= 3 and todayHabitsCount < 6
       habit.state = 1
     else
       habit.state = 2
 
     return habit
-
 
 module.exports.HabitHandler = HabitHandler
