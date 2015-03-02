@@ -36,7 +36,7 @@ class HabitHandler
       counter.save()
       
       habit.counters.push counter
-      if habit.counters.lenght > 3
+      if habit.counters.length > 3
         habit.state = 1
       else if habit.counters.lenght > 6
         habit.state = 2
