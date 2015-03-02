@@ -16,11 +16,7 @@ class HabitHandler
   @get = (request, reply) ->
     habit = Habit.findOne({_id: request.params.habitId, user: request.query.userId}).exec()
     habit.then (habit) ->
-      result = {
-        text: habit.text,
-        createdAt: habit.createdAt
-      }
-      reply(result).code(200)
+      reply(habit).code(200)
 
   @create = (request, reply) ->
     habit = new Habit()
@@ -40,10 +36,15 @@ class HabitHandler
       counter.save()
       
       habit.counters.push counter
+      if habit.counters.lenght > 3
+        habit.state = 1
+      else if habit.counters.lenght > 6
+        habit.state = 2
+
       habit.save()
 
       UserStatsUtils.updateStatsByHabit(habit, (done) ->
-        reply().code(200)
+        reply(habit).code(200)
       )
 
   @update = (request, reply) ->

@@ -165,6 +165,12 @@ describe ('Habits', function () {
         getResponse = getHabit(user._id, payload._id, user.token)
         getResponse.then (function (response) {
           response.statusCode.should.equal(200)
+          payload = JSON.parse(response.payload)
+          payload.should.have.property("text")
+          payload.text.should.equal(data.text)
+          
+          payload.should.have.property("state")
+          payload.state.should.equal(0)
           done()
         })
       }) 
@@ -271,6 +277,13 @@ describe ('Habits', function () {
         incResponse = incrementHabit(payload.user, payload._id, user.token)
         incResponse.then (function (response) {
           response.statusCode.should.equal(200)
+          payload = JSON.parse(response.payload)
+          payload.should.have.property("text")
+          payload.text.should.equal(data.text)
+          
+          payload.should.have.property("state")
+          payload.state.should.equal(0)
+
           done()
         })
       }) 
