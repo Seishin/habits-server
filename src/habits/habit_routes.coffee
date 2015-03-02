@@ -50,6 +50,7 @@ routes = [
         },
         payload: {
           text: Joi.string().required()
+          state: Joi.number().optional()
         }
       },
       tags: ['api'],
@@ -91,6 +92,7 @@ routes = [
         },
         payload: {
           text: Joi.string().optional()
+          state: Joi.number().optional()
         }
       },
       tags: ['api'],
