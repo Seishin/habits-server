@@ -7,18 +7,17 @@ Token = require 'random-token'
 StatsUtils = require('../stats/utils').StatsUtils
 
 class UserHandler
-  @get = (request, reply) ->
-    if request.params.userId
-      user = User.findOne({_id: request.params.userId}).exec()
+  @getUserProfileById = (@request, @reply) ->
+    if findUserById()
+      replyWithPrivateProfile()
+    else
+      replyWithNotFound()
 
-    When(user).then (user) ->
-      if user.token is request.headers.authorization
-        reply(user).code(200)
-      else
-        reply({
-          email: user.email,
-          name: user.name
-        }).code(200)
+  @getUserProfileByToken = (@request, @reply) ->
+    if findUserByAuthToken()
+      replyWithPrivateProfile()
+    else
+      replyWithNotFound()
 
   @create = (request, reply) ->
     data = request.payload
@@ -60,5 +59,32 @@ class UserHandler
           delete user.password
           
           reply(user).code(202)
-   
+          
+  findUserById = () =>
+    @user = When(User.findOne({_id: @request.params.userId}).exec()).then (user) ->
+      return user
+
+  findUserByAuthToken = () =>
+    req = {_id: @request.params.userId, token: @request.headers.authorization}
+    @user = When(User.findOne(req).exec()).then (user) ->
+      return user
+
+  userHasAuthToken = () =>
+    if @user.token is @request.headers.authorization
+      return true
+    else
+      return false
+
+  replyWithPrivateProfile = () =>
+    @reply(@user).code(200)
+
+  replyWithPublicProfile = () =>
+    @reply({
+      email: user.email,
+      name: user.name
+    }).code(200)
+
+  replyWithNotFound = () =>
+    @reply({message: 'Not found!'}).code(404)
+
 module.exports.UserHandler = UserHandler

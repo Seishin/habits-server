@@ -6,7 +6,7 @@ routes = [
     method: 'GET',
     path: '/users/{userId}',
     handler: (request, reply) ->
-      UserHandler.get(request, reply)
+      UserHandler.getUserProfileById(request, reply)
     ,
     config: {
       validate: {
@@ -22,7 +22,7 @@ routes = [
     method: 'GET',
     path: '/users',
     handler: (request, reply) ->
-      UserHandler.get(request, reply)
+      UserHandler.getUserProfileByToken(request, reply)
     ,
     config: {
       tags: ['api'],

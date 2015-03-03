@@ -11,7 +11,8 @@ routes = [
     config: {
       validate: {
         query: {
-          userId: Joi.string().required()
+          userId: Joi.string().required(),
+          date: Joi.string().optional()
         }
       },
       tags: ['api'],

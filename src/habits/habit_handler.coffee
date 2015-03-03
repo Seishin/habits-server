@@ -12,7 +12,11 @@ class HabitHandler
     habits = Habit.find({user: request.query.userId}).sort({createdAt: -1}).exec()
 
     When(habits).then (habits) ->
-      reply({habits: habits}).code(200)
+      result = []
+      for habit in habits
+        result = result.concat getState(habit, request.query.date)
+        
+      reply({habits: result}).code(200)
 
   @get = (request, reply) ->
     habit = Habit.findOne({_id: request.params.habitId, user: request.query.userId}).exec()
@@ -68,15 +72,14 @@ class HabitHandler
 
     Counter.remove({habit: request.params.habitId}).exec()
 
-  getState = (habit) ->
+  getState = (habit, selectedDate) ->
     habit = habit.toObject()
-
-    today = Moment(new Date()).format('YYYY-MM-DD')
+    
     todayHabitsCount = 0
 
     for counter in habit.counters
       date = Moment(new Date(counter.createdAt)).format('YYYY-MM-DD')
-      if date is today
+      if date is selectedDate
         todayHabitsCount += 1
 
     if todayHabitsCount < 3

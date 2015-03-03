@@ -5,6 +5,7 @@ var expect = chai.expect
 var assert = chai.assert 
 
 var When = require('when')
+var Moment = require('moment')
 var Models = require('../lib/models')
 var User = Models.User
 var Habit = Models.Habit
@@ -46,10 +47,10 @@ function getHabit (userId, habitId, token) {
   return Server.injectThen (opts)
 }
 
-function getAllHabit (userId, token) {
+function getAllHabit (userId, date, token) {
   var opts = {
     method: 'GET',
-    url: '/habits/all/?userId=' + userId,
+    url: '/habits/all/?userId=' + userId + '&date=' + date,
     headers: {authorization: token} 
   }
 
@@ -140,7 +141,9 @@ describe ('Habits', function () {
       createHabitResponse.then (function (response) {
         response.statusCode.should.equal(201)
         
-        getResponse = getAllHabit(user._id, user.token)
+        date = Moment(new Date()).format('YYYY-MM-DD')
+
+        getResponse = getAllHabit(user._id, date, user.token)
         getResponse.then (function (response) {
           var payload = JSON.parse(response.payload)
           response.statusCode.should.equal(200)
@@ -208,7 +211,7 @@ describe ('Habits', function () {
         response.statusCode.should.equal(201)
         var payload = JSON.parse(response.payload)
         
-        getResponse = getHabit(user._id, payload._id, "wrong_token")
+        getResponse = getHabit(user._id, payload._id, 'wrong_token')
         getResponse.then (function (response) {
           response.statusCode.should.equal(401)
           done()
