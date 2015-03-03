@@ -68,10 +68,10 @@ function updateHabit (userId, habitId, payload, token) {
   return Server.injectThen (opts)
 }
 
-function incrementHabit (userId, habitId, token) {
+function incrementHabit (userId, habitId, date, token) {
   var opts = {
     method: 'POST',
-    url: '/habits/increment/' + habitId + '/?userId=' + userId,
+    url: '/habits/increment/' + habitId + '/?userId=' + userId + '&date=' + date,
     headers: {authorization: token} 
   }
 
@@ -278,7 +278,9 @@ describe ('Habits', function () {
         response.statusCode.should.equal(201)
         var payload = JSON.parse(response.payload)
 
-        incResponse = incrementHabit(payload.user, payload._id, user.token)
+        date = Moment(new Date()).format('YYYY-MM-DD')
+
+        incResponse = incrementHabit(user._id, payload._id, date, user.token)
         incResponse.then (function (response) {
           response.statusCode.should.equal(200)
           payload = JSON.parse(response.payload)
@@ -347,7 +349,9 @@ describe ('Habits', function () {
         response.statusCode.should.equal(201)
         var payload = JSON.parse(response.payload)
 
-        incResponse = incrementHabit(payload.user, payload._id, user.token)
+        date = Moment(new Date()).format('YYYY-MM-DD')
+
+        incResponse = incrementHabit(user._id, payload._id, date, user.token)
         incResponse.then (function (response) {
           response.statusCode.should.equal(200)
 

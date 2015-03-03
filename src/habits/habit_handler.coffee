@@ -44,7 +44,7 @@ class HabitHandler
       habit.save()
 
       UserStatsUtils.updateStatsByHabit(habit, (done) ->
-        reply(getState habit).code(200)
+        reply(getState(habit, request.query.date)).code(200)
       )
 
   @update = (request, reply) ->
