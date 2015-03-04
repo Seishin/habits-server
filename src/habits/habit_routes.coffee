@@ -51,7 +51,6 @@ routes = [
         },
         payload: {
           text: Joi.string().required()
-          state: Joi.number().optional()
         }
       },
       tags: ['api'],

@@ -18,11 +18,16 @@ habitSchema = new Schema
   counters: [{type: Schema.Types.ObjectId, ref: 'HabitsCounter'}]
   user: {type: Schema.Types.ObjectId, ref: 'User'}
 
-dailyTask = new Schema
+habitsCounterSchema = new Schema
+  value: {type: Number, default: 0}
+  habit: {type: Schema.Types.ObjectId, ref: 'Habit'}
+
+dailyTaskSchema = new Schema
   text: String
   counters: [{type: Schema.Types.ObjectId, ref: 'Counter'}]
+  user: {type: Schema.Types.ObjectId, ref: 'User'}
 
-habitsCounterSchema = new Schema
+dailyTaskCounterSchema = new Schema
   value: {type: Number, default: 0}
   habit: {type: Schema.Types.ObjectId, ref: 'Habit'}
 
@@ -36,13 +41,18 @@ userStatsSchema = new Schema
 userSchema.plugin Timestamps
 userSchema.plugin FindOrCreate
 habitSchema.plugin Timestamps
-userSchema.plugin FindOrCreate
-habitsCounterSchema.plugin Timestamps
-habitsCounterSchema.plugin FindOrCreate
 userStatsSchema.plugin Timestamps
 userStatsSchema.plugin FindOrCreate
+habitsCounterSchema.plugin Timestamps
+habitsCounterSchema.plugin FindOrCreate
+dailyTaskSchema.plugin Timestamps
+dailyTaskSchema.plugin FindOrCreate
+dailyTaskCounterSchema.plugin Timestamps
+dailyTaskCounterSchema.plugin FindOrCreate
 
 module.exports.User = Mongoose.model('User', userSchema)
+module.exports.UserStats = Mongoose.model('UserStats', userStatsSchema)
 module.exports.Habit = Mongoose.model('Habit', habitSchema)
 module.exports.HabitsCounter = Mongoose.model('HabitsCounter', habitsCounterSchema)
-module.exports.UserStats = Mongoose.model('UserStats', userStatsSchema)
+module.exports.DailyTask = Mongoose.model('DailyTask', dailyTaskSchema)
+module.exports.DailyTaskCounter = Mongoose.model('DailyTaskCounter', dailyTaskCounterSchema)
