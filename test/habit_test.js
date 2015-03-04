@@ -148,7 +148,8 @@ describe ('Habits', function () {
           var payload = JSON.parse(response.payload)
           response.statusCode.should.equal(200)
           payload.should.have.property("habits")
-          done()
+
+          done() 
         })
       }) 
     })
