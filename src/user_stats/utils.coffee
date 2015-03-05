@@ -3,9 +3,9 @@ When = require 'when'
 
 Models = require '../models'
 User = Models.User
-Habit = Models.Habit
-Counter = Models.Counter
 UserStats = Models.UserStats
+Habit = Models.Habit
+DailyTask = Models.DailyTask
 
 class UserStatsUtils
   defaultExpPerTask = 30
@@ -14,30 +14,35 @@ class UserStatsUtils
   @expToNextLvl = (lvl) ->
     return 25 * lvl * (1 + lvl)
 
-  @updateStatsByHabit = (habit, done) ->
-    user = User.findOne({_id: habit.user}).exec()
+  @updateStats = (object, done) ->
+    user = User.findOne({_id: object.user}).exec()
     user.then (user) ->
-      today = Moment(new Date()).format('YYYY-MM-DD')
-      todayHabitsCount = 1
-
-      for counter in habit.counters
-        date = Moment(new Date(counter.createdAt)).format('YYYY-MM-DD')
-        if date is today
-          todayHabitsCount += 1
-
       stats = UserStats.findOne({_id: user.stats}).exec()
       stats.then (stats) ->
-        exp = expGainByTimes todayHabitsCount
-        stats.exp += exp
+        if object instanceof Habit
+          today = Moment(new Date()).format('YYYY-MM-DD')
+          todayHabitsCount = 1
 
-        if stats.exp >= UserStatsUtils.expToNextLvl stats.lvl
-          stats.lvl += 1
+          for counter in object.counters
+            date = Moment(new Date(counter.createdAt)).format('YYYY-MM-DD')
+            if date is today
+              todayHabitsCount += 1
 
-        if stats.hp <= 0
-          stats.hp = 0
-          stats.alive = false
+          exp = expGainByTimes todayHabitsCount
+          stats.exp += exp
 
-        stats.gold += goldGainByTimes todayHabitsCount
+          if stats.exp >= UserStatsUtils.expToNextLvl stats.lvl
+            stats.lvl += 1
+
+          if stats.hp <= 0
+            stats.hp = 0
+            stats.alive = false
+
+          stats.gold += goldGainByTimes todayHabitsCount
+        else if object instanceof DailyTask
+          stats.exp += defaultExpPerTask
+          stats.gold += defaultGoldPerTask
+
         stats.save()
         When(stats).then (stats) ->
           done()

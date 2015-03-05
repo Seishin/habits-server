@@ -6,7 +6,7 @@ routes = [
     method: 'GET',
     path: '/daily-task/{taskId}/',
     handler: (request, reply) ->
-      DailyTaskHandler.getOne(request, reply)
+      DailyTaskHandler.getTask(request, reply)
     ,
     config: {
       validate: {
@@ -25,7 +25,7 @@ routes = [
     method: 'GET',
     path: '/daily-task/all/',
     handler: (request, reply) ->
-      DailyTaskHandler.getAll(request, reply)
+      DailyTaskHandler.getAllTasks(request, reply)
     ,
     config: {
       validate: {
@@ -42,7 +42,7 @@ routes = [
     method: 'POST',
     path: '/daily-task/',
     handler: (request, reply) ->
-      DailyTaskHandler.createOne(request, reply)
+      DailyTaskHandler.createTask(request, reply)
     ,
     config: {
       validate: {
@@ -55,6 +55,65 @@ routes = [
       },
       tags: ['api'],
       description: 'Creating a new daily task.'
+    }
+  },
+  {
+    method: 'POST',
+    path: '/daily-task/{taskId}/',
+    handler: (request, reply) ->
+      DailyTaskHandler.checkTask(request, reply)
+    ,
+    config: {
+      validate: {
+        query: {
+          userId: Joi.string().required(),
+          date: Joi.string().required()
+        },
+        params: {
+          taskId: Joi.string().required()
+        }
+      },
+      tags: ['api'],
+      description: 'Set a specific task checked.'
+    }
+  },
+  {
+    method: 'PUT',
+    path: '/daily-task/{taskId}/',
+    handler: (request, reply) ->
+      DailyTaskHandler.updateTask(request, reply)
+    ,
+    config: {
+      validate: {
+        query: {
+          userId: Joi.string().required(),
+          date: Joi.string().required()
+        },
+        params: {
+          taskId: Joi.string().required()
+        }
+      },
+      tags: ['api'],
+      description: 'Update a specific task.'
+    }
+  },
+  {
+    method: 'DELETE',
+    path: '/daily-task/{taskId}/',
+    handler: (request, reply) ->
+      DailyTaskHandler.deleteTask(request, reply)
+    ,
+    config: {
+      validate: {
+        query: {
+          userId: Joi.string().required()
+        },
+        params: {
+          taskId: Joi.string().required()
+        }
+      },
+      tags: ['api'],
+      description: 'Delete a specific task.'
     }
   }
 ]

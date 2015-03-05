@@ -24,12 +24,11 @@ habitsCounterSchema = new Schema
 
 dailyTaskSchema = new Schema
   text: String
-  counters: [{type: Schema.Types.ObjectId, ref: 'Counter'}]
   user: {type: Schema.Types.ObjectId, ref: 'User'}
 
 dailyTaskCounterSchema = new Schema
   value: {type: Number, default: 0}
-  habit: {type: Schema.Types.ObjectId, ref: 'Habit'}
+  task: {type: Schema.Types.ObjectId, ref: 'DailyTask'}
 
 userStatsSchema = new Schema
   hp: {type: Number, default: 100}

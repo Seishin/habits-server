@@ -60,9 +60,12 @@ function getAllTasks (userId) {
 }
 
 function updateTask (userId, taskId) {
+  var date = Moment(new Date()).format('YYYY-MM-DD')
+  var data = { text: "Clean my room" }
   var opts = {
     method: 'PUT',
-    url: '/daily-task/' + taskId + '/?userId=' + userId,
+    url: '/daily-task/' + taskId + '/?userId=' + userId + '&date=' + date,
+    payload: data,
     headers: { authorization: 'random_token' } 
   }
 
@@ -83,7 +86,7 @@ function checkTask (userId, taskId) {
 function deleteTask (userId, taskId) {
   var opts = {
     method: 'DELETE',
-    url: '/daily-task/' + dailyTask + '/?userId=' + userId,
+    url: '/daily-task/' + taskId + '/?userId=' + userId,
     headers: { authorization: 'random_token' } 
   }
 
@@ -116,38 +119,89 @@ describe ('Daily Task', function () {
   })
     
   describe ('Manipulations', function () {
-    taskId = null
+    task = null
 
     beforeEach (function (done) {
       request = createTask(user._id)
       When(createTask(user._id)).then (function (result) {
         if (result != null)
-          payload = JSON.parse(result.payload)
-          taskId = payload._id
+          task = JSON.parse(result.payload)
           done()
       })
     })
 
     it ('Should get a specific daily task', function (done) {
-      request = getTask(user._id, taskId)
+      request = getTask(user._id, task._id)
       When(request).then (function (response) { 
         payload = JSON.parse(response.payload)
 
         response.statusCode.should.equal(200)
         payload.should.have.property("text")
         payload.should.have.property("user")
+        payload.should.have.property("state")
         done() 
       })
     })
 
     it ('Should get all daily tasks', function (done) {
-      request = getAllTasks(user._id, taskId)
+      request = getAllTasks(user._id, task._id)
       When(request).then (function (response) {
         payload = JSON.parse(response.payload)
 
         response.statusCode.should.equal(200)
         payload.should.have.property('tasks')
         assert.isArray(payload.tasks)
+        done()
+      })
+    })
+
+    it ('Should check a specific task', function (done) {
+      request = checkTask(user._id, task._id)
+      When(request).then (function (response) {
+        payload = JSON.parse(response.payload)
+
+        response.statusCode.should.equal(200)
+        payload.should.have.property("text")
+        payload.should.have.property("user")
+        payload.should.have.property("state")
+        done()
+      }) 
+    })
+
+    it ('Should check a specific task and update user\'s stats', function (done) {
+      preUserStats = UserStats.findOne({_id: user.stats}).exec()
+      request = checkTask(user._id, task._id)
+      request.then (function (response) {
+        response.statusCode.should.equal(200)
+
+        postUserStats = UserStats.findOne({_id: user.stats}).exec()
+
+        When.join(preUserStats, postUserStats).then (function (stats) {
+          assert.isAbove(stats[1].exp, stats[0].exp, 'Post exp > pre exp')
+          assert.isAbove(stats[1].gold, stats[0].exp, 'Post gold > pre gold')
+          assert.equal(stats[1].hp, stats[0].hp, 'Post hp == pre hp')
+          stats[1].alive.should.equal(true)
+
+          done()
+        })
+      })
+    }) 
+
+    it ('Should update a specific task', function (done) {
+      preUpdateText = task.text
+      request = updateTask(user._id, task._id)
+      request.then (function (response) {
+        response.statusCode.should.equal(200)
+        payload = JSON.parse(response.payload)
+        payload.text.should.not.equal(preUpdateText)
+        done()
+      })
+    })
+
+    it ('Should delete a specific task', function (done) {
+      request = deleteTask(user._id, task._id)
+      request.then (function (response) {
+        response.statusCode.should.equal(200)
         done()
       })
     })
@@ -158,5 +212,4 @@ describe ('Daily Task', function () {
       done()
     })
   })
-
 })
