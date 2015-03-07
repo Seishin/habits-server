@@ -10,8 +10,6 @@ userSchema = new Schema
   profileAvatar: String
   token: String
   stats: {type: Schema.Types.ObjectId, ref: 'UserStats'}
-  #dailies: [dailiesSchema]
-  #todos: [toDosSchema]
 
 habitSchema = new Schema
   text: String

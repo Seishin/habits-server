@@ -57,7 +57,7 @@ class DailyTaskHandler
   @deleteTask = (request, reply) ->
     DailyTask.remove({_id: request.params.taskId, user: request.query.userId}, (err, result) ->
       if not err
-        reply({message: 'Success'}).code(200)
+        reply({id: request.params.taskId}).code(200)
     ).exec()
 
     Counter.remove({task: request.params.taskId}).exec()

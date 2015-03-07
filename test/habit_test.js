@@ -262,6 +262,9 @@ describe ('Habits', function () {
         getResponse = deleteHabit(payload.user, payload._id, user.token)
         getResponse.then (function (response) {
           response.statusCode.should.equal(200)
+          payload = JSON.parse(response.payload)
+
+          payload.should.have.property("id")
           done()
         })
       }) 

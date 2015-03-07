@@ -202,6 +202,8 @@ describe ('Daily Task', function () {
       request = deleteTask(user._id, task._id)
       request.then (function (response) {
         response.statusCode.should.equal(200)
+        payload = JSON.parse(response.payload)
+        payload.should.have.property("id")
         done()
       })
     })

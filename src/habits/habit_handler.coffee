@@ -69,7 +69,7 @@ class HabitHandler
       if err
         reply({message: err}).code(500)
       else
-        reply({message: "Success!"}).code(200)
+        reply({id: request.params.habitId}).code(200)
     ).exec()
 
     Counter.remove({habit: request.params.habitId}).exec()
