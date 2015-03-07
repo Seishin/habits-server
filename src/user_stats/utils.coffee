@@ -31,9 +31,6 @@ class UserStatsUtils
           exp = expGainByTimes todayHabitsCount
           stats.exp += exp
 
-          if stats.exp >= UserStatsUtils.expToNextLvl stats.lvl
-            stats.lvl += 1
-
           if stats.hp <= 0
             stats.hp = 0
             stats.alive = false
@@ -46,6 +43,11 @@ class UserStatsUtils
           else
             stats.exp -= defaultExpPerTask
             stats.gold -= defaultGoldPerTask
+
+        if stats.exp > UserStatsUtils.expToNextLvl stats.lvl
+            stats.lvl += 1
+        else if stats.exp <= UserStatsUtils.expToNextLvl(stats.lvl - 1)
+          stats.lvl -= 1
 
         stats.save()
         When(stats).then (stats) ->
