@@ -45,7 +45,7 @@ class HabitHandler
       habit.counters.push counter
       habit.save()
 
-      UserStatsUtils.updateStats(habit, (done) ->
+      UserStatsUtils.updateStats(habit, true, (done) ->
         reply(HabitsUtils.getState(habit, request.query.date)).code(200)
       )
 

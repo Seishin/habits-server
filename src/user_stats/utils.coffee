@@ -14,7 +14,7 @@ class UserStatsUtils
   @expToNextLvl = (lvl) ->
     return 25 * lvl * (1 + lvl)
 
-  @updateStats = (object, done) ->
+  @updateStats = (object, inc, done) ->
     user = User.findOne({_id: object.user}).exec()
     user.then (user) ->
       stats = UserStats.findOne({_id: user.stats}).exec()
@@ -40,8 +40,12 @@ class UserStatsUtils
 
           stats.gold += goldGainByTimes todayHabitsCount
         else if object instanceof DailyTask
-          stats.exp += defaultExpPerTask
-          stats.gold += defaultGoldPerTask
+          if inc
+            stats.exp += defaultExpPerTask
+            stats.gold += defaultGoldPerTask
+          else
+            stats.exp -= defaultExpPerTask
+            stats.gold -= defaultGoldPerTask
 
         stats.save()
         When(stats).then (stats) ->

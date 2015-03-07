@@ -76,7 +76,18 @@ function checkTask (userId, taskId) {
   var date = Moment(new Date()).format('YYYY-MM-DD')
   var opts = {
     method: 'POST',
-    url: '/daily-task/' + taskId + '/?userId=' + userId + '&date=' + date,
+    url: '/daily-task/' + taskId + '/check/?userId=' + userId + '&date=' + date,
+    headers: { authorization: 'random_token' }
+  }
+
+  return Server.injectThen (opts)
+}
+
+function uncheckTask (userId, taskId) {
+  var date = Moment(new Date()).format('YYYY-MM-DD')
+  var opts = {
+    method: 'POST',
+    url: '/daily-task/' + taskId + '/uncheck/?userId=' + userId + '&date=' + date,
     headers: { authorization: 'random_token' }
   }
 
@@ -168,6 +179,23 @@ describe ('Daily Task', function () {
       }) 
     })
 
+    it ('Should uncheck a specific task', function (done) {
+      request = checkTask(user._id, task._id)
+      When(request).then (function (response) {
+        request = uncheckTask(user._id, task._id)
+        When(request).then (function (response) {
+          payload = JSON.parse(response.payload)
+
+          response.statusCode.should.equal(200)
+          payload.should.have.property("text")
+          payload.should.have.property("user")
+          payload.should.have.property("state")
+          done()
+        }) 
+      })
+    })
+
+
     it ('Should check a specific task and update user\'s stats', function (done) {
       preUserStats = UserStats.findOne({_id: user.stats}).exec()
       request = checkTask(user._id, task._id)
@@ -186,6 +214,28 @@ describe ('Daily Task', function () {
         })
       })
     }) 
+
+    it ('Should uncheck a specific task and update user\'s stats', function (done) {
+      request = checkTask(user._id, task._id)
+      request.then (function (response) {
+        preUserStats = UserStats.findOne({_id: user.stats}).exec()
+        request = uncheckTask(user._id, task._id)
+        request.then (function (response) {
+          response.statusCode.should.equal(200)
+
+          postUserStats = UserStats.findOne({_id: user.stats}).exec()
+
+          When.join(preUserStats, postUserStats).then (function (stats) {
+            assert.isAbove(stats[0].exp, stats[1].exp, 'Pre exp > post  exp')
+            assert.isAbove(stats[0].gold, stats[1].exp, 'Pre gold > post gold')
+            assert.equal(stats[0].hp, stats[1].hp, 'Pre hp == post hp')
+            stats[1].alive.should.equal(true)
+
+            done()
+          })
+        })
+      })
+    })
 
     it ('Should update a specific task', function (done) {
       preUpdateText = task.text

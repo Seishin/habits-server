@@ -59,7 +59,7 @@ routes = [
   },
   {
     method: 'POST',
-    path: '/daily-task/{taskId}/',
+    path: '/daily-task/{taskId}/check/',
     handler: (request, reply) ->
       DailyTaskHandler.checkTask(request, reply)
     ,
@@ -75,6 +75,26 @@ routes = [
       },
       tags: ['api'],
       description: 'Set a specific task checked.'
+    }
+  },
+  {
+    method: 'POST',
+    path: '/daily-task/{taskId}/uncheck/',
+    handler: (request, reply) ->
+      DailyTaskHandler.uncheckTask(request, reply)
+    ,
+    config: {
+      validate: {
+        query: {
+          userId: Joi.string().required(),
+          date: Joi.string().required()
+        },
+        params: {
+          taskId: Joi.string().required()
+        }
+      },
+      tags: ['api'],
+      description: 'Set a specific task unchecked.'
     }
   },
   {
