@@ -33,7 +33,7 @@ class DailyTaskHandler
         result.push DailyTaskUtils.getState(task, request.query.date)
 
       When.all(result).then (result) ->
-        reply({tasks: tasks}).code(200)
+        reply({tasks: result}).code(200)
 
   @checkTask = (request, reply) ->
     task = DailyTask.findOne({_id: request.params.taskId, user: request.query.userId}).exec()
