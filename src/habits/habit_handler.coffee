@@ -23,7 +23,7 @@ class HabitHandler
   @get = (request, reply) ->
     habit = Habit.findOne({_id: request.params.habitId, user: request.query.userId}).exec()
     habit.then (habit) ->
-      reply(HabitsUtils.getState habit).code(200)
+      reply(HabitsUtils.getState(habit, request.query.date)).code(200)
 
   @create = (request, reply) ->
     habit = new Habit()
@@ -32,7 +32,7 @@ class HabitHandler
     habit.save()
 
     When(habit).then (habit) ->
-      reply(habit).code(201)
+      reply(HabitsUtils.getState(habit, request.query.date)).code(201)
 
   @increment = (request, reply) ->
     habit = Habit.findOne({_id: request.params.habitId, user: request.query.userId}).populate('counters').exec()
@@ -60,7 +60,7 @@ class HabitHandler
 
         habit.save()
 
-        reply(habit).code(200)
+        reply(HabitsUtils.getState(habit, request.query.date)).code(200)
       else
         reply({message: 'Cannot find the habit!'}).code(404)
         

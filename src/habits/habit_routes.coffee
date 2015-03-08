@@ -28,7 +28,8 @@ routes = [
     config: {
       validate: {
         query: {
-          userId: Joi.string().required()
+          userId: Joi.string().required(),
+          date: Joi.string().required()
         },
         params: {
           habitId: Joi.string().required()
@@ -86,7 +87,8 @@ routes = [
     config: {
       validate: {
         query: {
-          userId: Joi.string().required()
+          userId: Joi.string().required(),
+          date: Joi.string().required()
         },
         params: {
           habitId: Joi.string().required()

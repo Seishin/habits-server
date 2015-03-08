@@ -37,10 +37,10 @@ function createHabit (userId, payload, token) {
   return Server.injectThen (opts)
 }
 
-function getHabit (userId, habitId, token) {
+function getHabit (userId, habitId, token, date) {
   var opts = {
     method: 'GET',
-    url: '/habits/' + habitId + '/?userId=' + userId,
+    url: '/habits/' + habitId + '/?userId=' + userId + '&date=' + date,
     headers: {authorization: token} 
   }
 
@@ -57,10 +57,10 @@ function getAllHabit (userId, date, token) {
   return Server.injectThen (opts)
 }
 
-function updateHabit (userId, habitId, payload, token) {
+function updateHabit (userId, habitId, payload, token, date) {
   var opts = {
     method: 'PUT',
-    url: '/habits/' + habitId + '/?userId=' + userId,
+    url: '/habits/' + habitId + '/?userId=' + userId + '&date=' + date,
     headers: {authorization: token},
     payload: payload
   }
@@ -98,6 +98,9 @@ describe ('Habits', function () {
       response = createHabit(user._id, data, user.token)
       response.then (function (response) {
         response.statusCode.should.equal(201)
+        payload = JSON.parse(response.payload)
+        
+        payload.should.have.property("state")
         done()
       })
     })
@@ -166,7 +169,9 @@ describe ('Habits', function () {
         response.statusCode.should.equal(201)
         payload = JSON.parse(response.payload)
         
-        getResponse = getHabit(user._id, payload._id, user.token)
+        date = Moment(new Date()).format('YYYY-MM-DD')
+
+        getResponse = getHabit(user._id, payload._id, user.token, date)
         getResponse.then (function (response) {
           response.statusCode.should.equal(200)
           payload = JSON.parse(response.payload)
@@ -192,7 +197,9 @@ describe ('Habits', function () {
         response.statusCode.should.equal(201)
         payload = JSON.parse(response.payload)
         
-        getResponse = getHabit(user._id, payload._id, null)
+        date = Moment(new Date()).format('YYYY-MM-DD')
+
+        getResponse = getHabit(user._id, payload._id, null, date)
         getResponse.then (function (response) {
           response.statusCode.should.equal(401)
           done()
@@ -211,8 +218,10 @@ describe ('Habits', function () {
       createHabitResponse.then (function (response) {
         response.statusCode.should.equal(201)
         var payload = JSON.parse(response.payload)
+
+        date = Moment(new Date()).format('YYYY-MM-DD')
         
-        getResponse = getHabit(user._id, payload._id, 'wrong_token')
+        getResponse = getHabit(user._id, payload._id, 'wrong_token', date)
         getResponse.then (function (response) {
           response.statusCode.should.equal(401)
           done()
@@ -236,12 +245,16 @@ describe ('Habits', function () {
           text: "Reading a book",
           state: 0
         }
-        getResponse = updateHabit(payload.user, payload._id, newData, user.token)
+
+        date = Moment(new Date()).format('YYYY-MM-DD')
+
+        getResponse = updateHabit(payload.user, payload._id, newData, user.token, date)
         getResponse.then (function (response) {
           var payload = JSON.parse(response.payload)
           response.statusCode.should.equal(200)
           payload.should.have.property("text")
           payload.text.should.equal(newData.text)
+          payload.should.have.property("state")
           done()
         })
       }) 
