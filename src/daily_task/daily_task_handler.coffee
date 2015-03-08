@@ -49,16 +49,15 @@ class DailyTaskHandler
   @uncheckTask = (request, reply) ->
     task = DailyTask.findOne({_id: request.params.taskId, user: request.query.userId}).exec()
     When(task).then (task) ->
-      c = Counter.findOne({task: task}).exec()
-      c.then (c) ->
-        if c
-          Counter.remove({_id: c._id}, (err, result) ->
-            if not err
-              UserStatsUtils.updateStats(task, false, (done) ->
-                reply(DailyTaskUtils.getState(task, request.query.date)).code(200)
-              )
+      Counter.remove({task: task, createdAt: {$gte: request.query.date}}, (err, result) ->
+        if not err
+          UserStatsUtils.updateStats(task, false, (done) ->
+            reply(DailyTaskUtils.getState(task, request.query.date)).code(200)
           )
- 
+        else
+          reply({message: err}).code(409)
+      )
+
   @updateTask = (request, reply) ->
     task = DailyTask.findOne({_id: request.params.taskId, user: request.query.userId}).exec()
     When(task).then (task) ->
