@@ -111,6 +111,9 @@ routes = [
         },
         params: {
           taskId: Joi.string().required()
+        },
+        payload: {
+          text: Joi.string().required()
         }
       },
       tags: ['api'],
