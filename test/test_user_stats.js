@@ -1,4 +1,4 @@
-require ('./spec_helper')
+require ('./utils/spec_helper')
 var should = require('chai').should()
 var expect = require('chai').expect
 
