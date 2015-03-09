@@ -61,13 +61,13 @@ function getAllHabits (userId, token) {
   return Server.injectThen (opts)
 }
 
-function updateHabit (userId, habitId, token) {
+function updateHabit (userId, habitId, token, updatedText) {
   var date = Moment(new Date()).format('YYYY-MM-DD')
   var opts = {
     method: 'PUT',
     url: '/habits/' + habitId + '/?userId=' + userId + '&date=' + date,
     headers: { authorization: token },
-    payload: { text: 'Reading a book 1h' } 
+    payload: { text: updatedText } 
   }
 
   return Server.injectThen (opts)
@@ -188,13 +188,18 @@ describe ('Habits', function () {
     })
 
     it ('Should update habit', function (done) {
-      request = updateHabit(user._id, habit._id, user.token)
+      preUpdatedText = habit.text
+      updatedText = 'Reading a book 2h'
+
+      request = updateHabit(user._id, habit._id, user.token, updatedText)
       request.then (function (response) {
         payload = JSON.parse(response.payload)
 
         response.statusCode.should.equal(200)
         payload.should.have.property('text')
         payload.should.have.property('state')
+        payload.text.should.not.equal(preUpdatedText)
+
         done()
       })
     })
