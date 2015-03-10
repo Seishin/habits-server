@@ -30,7 +30,7 @@ function createUser () {
 function createTask(userId, token) {
   var opts = {
     method: 'POST',
-    url: '/daily-task/?userId=' + userId,
+    url: '/daily-tasks/?userId=' + userId,
     payload: { text: 'Reading a book 1h' },
     headers: { authorization: token }
   }
@@ -41,7 +41,7 @@ function createTask(userId, token) {
 function getTask (userId, taskId, token) {
   var opts = {
     method: 'GET',
-    url: '/daily-task/' + taskId + '/?userId=' + userId,
+    url: '/daily-tasks/' + taskId + '/?userId=' + userId,
     headers: { authorization: token }
   }
 
@@ -52,7 +52,7 @@ function getAllTasks (userId, token) {
   var date = Moment(new Date()).format('YYYY-MM-DD')
   var opts = {
     method: 'GET',
-    url: '/daily-task/all/?userId=' + userId + '&date=' + date,
+    url: '/daily-tasks/all/?userId=' + userId + '&date=' + date,
     headers: { authorization: token }
   }
 
@@ -64,7 +64,7 @@ function updateTask (userId, taskId, token, updatedText) {
   var data = { text: "Clean my room" }
   var opts = {
     method: 'PUT',
-    url: '/daily-task/' + taskId + '/?userId=' + userId + '&date=' + date,
+    url: '/daily-tasks/' + taskId + '/?userId=' + userId + '&date=' + date,
     payload: { text: updatedText },
     headers: { authorization: token } 
   }
@@ -76,7 +76,7 @@ function checkTask (userId, taskId, token) {
   var date = Moment(new Date()).format('YYYY-MM-DD')
   var opts = {
     method: 'POST',
-    url: '/daily-task/' + taskId + '/check/?userId=' + userId + '&date=' + date,
+    url: '/daily-tasks/' + taskId + '/check/?userId=' + userId + '&date=' + date,
     headers: { authorization: token }
   }
 
@@ -87,7 +87,7 @@ function uncheckTask (userId, taskId, token) {
   var date = Moment(new Date()).format('YYYY-MM-DD')
   var opts = {
     method: 'POST',
-    url: '/daily-task/' + taskId + '/uncheck/?userId=' + userId + '&date=' + date,
+    url: '/daily-tasks/' + taskId + '/uncheck/?userId=' + userId + '&date=' + date,
     headers: { authorization: token }
   }
 
@@ -97,7 +97,7 @@ function uncheckTask (userId, taskId, token) {
 function deleteTask (userId, taskId, token) {
   var opts = {
     method: 'DELETE',
-    url: '/daily-task/' + taskId + '/?userId=' + userId,
+    url: '/daily-tasks/' + taskId + '/?userId=' + userId,
     headers: { authorization: token } 
   }
 

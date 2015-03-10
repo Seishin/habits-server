@@ -4,7 +4,7 @@ Joi = require 'joi'
 routes = [
   {
     method: 'GET',
-    path: '/daily-task/{taskId}/',
+    path: '/daily-tasks/{taskId}/',
     handler: (request, reply) ->
       DailyTaskHandler.getTask(request, reply)
     ,
@@ -23,7 +23,7 @@ routes = [
   },
   {
     method: 'GET',
-    path: '/daily-task/all/',
+    path: '/daily-tasks/all/',
     handler: (request, reply) ->
       DailyTaskHandler.getAllTasks(request, reply)
     ,
@@ -40,7 +40,7 @@ routes = [
   },
   {
     method: 'POST',
-    path: '/daily-task/',
+    path: '/daily-tasks/',
     handler: (request, reply) ->
       DailyTaskHandler.createTask(request, reply)
     ,
@@ -59,7 +59,7 @@ routes = [
   },
   {
     method: 'POST',
-    path: '/daily-task/{taskId}/check/',
+    path: '/daily-tasks/{taskId}/check/',
     handler: (request, reply) ->
       DailyTaskHandler.checkTask(request, reply)
     ,
@@ -79,7 +79,7 @@ routes = [
   },
   {
     method: 'POST',
-    path: '/daily-task/{taskId}/uncheck/',
+    path: '/daily-tasks/{taskId}/uncheck/',
     handler: (request, reply) ->
       DailyTaskHandler.uncheckTask(request, reply)
     ,
@@ -99,7 +99,7 @@ routes = [
   },
   {
     method: 'PUT',
-    path: '/daily-task/{taskId}/',
+    path: '/daily-tasks/{taskId}/',
     handler: (request, reply) ->
       DailyTaskHandler.updateTask(request, reply)
     ,
@@ -122,7 +122,7 @@ routes = [
   },
   {
     method: 'DELETE',
-    path: '/daily-task/{taskId}/',
+    path: '/daily-tasks/{taskId}/',
     handler: (request, reply) ->
       DailyTaskHandler.deleteTask(request, reply)
     ,
