@@ -29,7 +29,7 @@ class ToDoHandler
     When(todos).then (todos) ->
       result = []
       for todo in todos
-        result.push ToDoUtils.getState(todo, request.query.date)
+        result.push ToDoUtils.getState(todo)
 
       When.all(result).then (result) ->
         reply({todos: result}).code(200)
@@ -42,16 +42,16 @@ class ToDoHandler
       c.save()
 
       UserStatsUtils.updateStats(todo, true, (done) ->
-        reply(ToDoUtils.getState(todo, request.query.date)).code(200)
+        reply(ToDoUtils.getState(todo)).code(200)
       )
 
    @uncheckToDo = (request, reply) ->
     todo = ToDo.findOne({_id: request.params.todoId, user: request.query.userId}).exec()
     When(todo).then (todo) ->
-      Counter.remove({todo: todo, createdAt: {$gte: request.query.date}}, (err, result) ->
+      Counter.remove({todo: todo}, (err, result) ->
         if not err
           UserStatsUtils.updateStats(todo, false, (done) ->
-            reply(ToDoUtils.getState(todo, request.query.date)).code(200)
+            reply(ToDoUtils.getState(todo)).code(200)
           )
         else
           reply({message: err}).code(409)
@@ -63,7 +63,7 @@ class ToDoHandler
       todo.text = request.payload.text
       todo.save()
 
-      reply(ToDoUtils.getState(todo, request.query.date)).code(200)
+      reply(ToDoUtils.getState(todo)).code(200)
 
   @deleteToDo = (request, reply) ->
     ToDo.remove({_id: request.params.todoId, user: request.query.userId}, (err, result) ->

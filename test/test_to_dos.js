@@ -50,10 +50,9 @@ function getToDo (userId, toDoId, token) {
 }
 
 function getAllToDos (userId, token) {
-   var date = Moment(new Date()).format('YYYY-MM-DD')
    var opts = {
      method: 'GET',
-     url: '/todos/all/?userId=' + userId + '&date=' + date,
+     url: '/todos/all/?userId=' + userId,
      headers: { authorization: token }
    }
  
@@ -61,11 +60,10 @@ function getAllToDos (userId, token) {
 }
 
 function updateToDo (userId, toDoId, token, updatedText) {
-  var date = Moment(new Date()).format('YYYY-MM-DD')
   var data = { text: 'Pay phone bill' }
   var opts = {
     method: 'PUT',
-    url: '/todos/' + toDoId + '/?userId=' + userId + '&date=' + date,
+    url: '/todos/' + toDoId + '/?userId=' + userId,
     payload: { text: updatedText },
     headers: { authorization: token } 
   }
@@ -74,10 +72,9 @@ function updateToDo (userId, toDoId, token, updatedText) {
 }
 
 function checkToDo (userId, toDoId, token) {
-  var date = Moment(new Date()).format('YYYY-MM-DD')
   var opts = {
     method: 'POST',
-    url: '/todos/' + toDoId + '/check/?userId=' + userId + '&date=' + date,
+    url: '/todos/' + toDoId + '/check/?userId=' + userId,
     headers: { authorization: token }
   }
 
@@ -85,10 +82,9 @@ function checkToDo (userId, toDoId, token) {
 }
 
 function uncheckToDo (userId, toDoId, token) {
-  var date = Moment(new Date()).format('YYYY-MM-DD')
   var opts = {
     method: 'POST',
-    url: '/todos/' + toDoId + '/uncheck/?userId=' + userId + '&date=' + date,
+    url: '/todos/' + toDoId + '/uncheck/?userId=' + userId,
     headers: { authorization: token }
   }
 

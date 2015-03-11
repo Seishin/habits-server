@@ -31,7 +31,6 @@ routes = [
       validate: {
         query: {
           userId: Joi.string().required(),
-          date: Joi.string().required()
         }
       },
       tags: ['api'],
@@ -67,7 +66,6 @@ routes = [
       validate: {
         query: {
           userId: Joi.string().required(),
-          date: Joi.string().required()
         },
         params: {
           todoId: Joi.string().required()
@@ -87,7 +85,6 @@ routes = [
       validate: {
         query: {
           userId: Joi.string().required(),
-          date: Joi.string().required()
         },
         params: {
           todoId: Joi.string().required()
@@ -107,7 +104,6 @@ routes = [
       validate: {
         query: {
           userId: Joi.string().required(),
-          date: Joi.string().required()
         },
         params: {
           todoId: Joi.string().required()
