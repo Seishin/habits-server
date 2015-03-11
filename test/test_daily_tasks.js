@@ -259,7 +259,7 @@ describe ('Daily Task', function () {
     })
 
     it ('Should not uncheck a task (missing token)', function (done) {
-      request = checkTask(user._id, task._id, null)
+      request = uncheckTask(user._id, task._id, null)
       request.then (function (response) {
         response.statusCode.should.equal(401)
         done()
@@ -267,7 +267,7 @@ describe ('Daily Task', function () {
     })
 
     it ('Should not uncheck a task (wrong token)', function (done) {
-      request = checkTask(user._id, task._id, 'wrong_token')
+      request = uncheckTask(user._id, task._id, 'wrong_token')
       request.then (function (response) {
         response.statusCode.should.equal(401)
         done()
