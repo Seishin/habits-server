@@ -2,7 +2,7 @@ Moment = require ('moment')
 When = require 'when'
 
 Models = require '../models'
-Counter = Models.HabitsCounter
+Counter = Models.HabitCounter
 
 class HabitsUtils
   @getState = (habit, selectedDate) ->

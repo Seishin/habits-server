@@ -13,10 +13,10 @@ userSchema = new Schema
 
 habitSchema = new Schema
   text: String
-  counters: [{type: Schema.Types.ObjectId, ref: 'HabitsCounter'}]
+  counters: [{type: Schema.Types.ObjectId, ref: 'HabitCounter'}]
   user: {type: Schema.Types.ObjectId, ref: 'User'}
 
-habitsCounterSchema = new Schema
+habitCounterSchema = new Schema
   value: {type: Number, default: 0}
   habit: {type: Schema.Types.ObjectId, ref: 'Habit'}
 
@@ -27,6 +27,14 @@ dailyTaskSchema = new Schema
 dailyTaskCounterSchema = new Schema
   value: {type: Number, default: 0}
   task: {type: Schema.Types.ObjectId, ref: 'DailyTask'}
+  
+toDoSchema = new Schema
+  text: String
+  user: {type: Schema.Types.ObjectId, ref: 'User'}
+
+toDoCounterSchema = new Schema
+  value: {type: Number, default: 0}
+  todo: {type: Schema.Types.ObjectId, ref: 'ToDo'}
 
 userStatsSchema = new Schema
   hp: {type: Number, default: 100}
@@ -40,16 +48,22 @@ userSchema.plugin FindOrCreate
 habitSchema.plugin Timestamps
 userStatsSchema.plugin Timestamps
 userStatsSchema.plugin FindOrCreate
-habitsCounterSchema.plugin Timestamps
-habitsCounterSchema.plugin FindOrCreate
+habitCounterSchema.plugin Timestamps
+habitCounterSchema.plugin FindOrCreate
 dailyTaskSchema.plugin Timestamps
 dailyTaskSchema.plugin FindOrCreate
 dailyTaskCounterSchema.plugin Timestamps
 dailyTaskCounterSchema.plugin FindOrCreate
+toDoSchema.plugin Timestamps
+toDoSchema.plugin FindOrCreate
+toDoCounterSchema.plugin Timestamps
+toDoCounterSchema.plugin FindOrCreate
 
 module.exports.User = Mongoose.model('User', userSchema)
 module.exports.UserStats = Mongoose.model('UserStats', userStatsSchema)
 module.exports.Habit = Mongoose.model('Habit', habitSchema)
-module.exports.HabitsCounter = Mongoose.model('HabitsCounter', habitsCounterSchema)
+module.exports.HabitCounter = Mongoose.model('HabitCounter', habitCounterSchema)
 module.exports.DailyTask = Mongoose.model('DailyTask', dailyTaskSchema)
 module.exports.DailyTaskCounter = Mongoose.model('DailyTaskCounter', dailyTaskCounterSchema)
+module.exports.ToDo = Mongoose.model('ToDo', toDoSchema)
+module.exports.ToDoCounter = Mongoose.model('ToDoCounter', toDoCounterSchema)

@@ -1,7 +1,7 @@
 Models = require '../models'
 User = Models.User
 Habit = Models.Habit
-Counter = Models.HabitsCounter
+Counter = Models.HabitCounter
 
 When = require 'when'
 Moment = require 'moment'
