@@ -6,6 +6,7 @@ User = Models.User
 UserStats = Models.UserStats
 Habit = Models.Habit
 DailyTask = Models.DailyTask
+ToDo = Models.ToDo
 
 class UserStatsUtils
   defaultExpPerTask = 30
@@ -36,7 +37,7 @@ class UserStatsUtils
             stats.alive = false
 
           stats.gold += goldGainByTimes todayHabitsCount
-        else if object instanceof DailyTask
+        else if ((object instanceof DailyTask) or (object instanceof ToDo))
           if inc
             stats.exp += defaultExpPerTask
             stats.gold += defaultGoldPerTask
