@@ -205,6 +205,12 @@ describe ('Reward', function () {
       request = buyReward(user._id, reward._id, user.token)
       request.then (function (response) {
         response.statusCode.should.equal(200)
+
+        payload = JSON.parse(response.payload)
+        payload.should.have.property('text')
+        payload.should.have.property('gold')
+        payload.should.have.property('user')
+
         done()
       }) 
     })

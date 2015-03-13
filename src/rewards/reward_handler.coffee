@@ -31,7 +31,7 @@ class RewardHandler
     reward = Reward.findOne({_id: request.params.rewardId, user: request.query.userId}).exec()
     When(reward).then (reward) ->
       UserStatsUtils.updateStats(reward, false, (done) ->
-        reply().code(200)
+        reply(reward).code(200)
       )
 
   @updateReward = (request, reply) ->

@@ -38,7 +38,7 @@ class UserStatsUtils
             stats.alive = false
 
           stats.gold += goldGainByTimes todayHabitsCount
-        else if ((object instanceof DailyTask) or (object instanceof ToDo))
+        else if ((object instanceof DailyTask) || (object instanceof ToDo))
           if inc
             stats.exp += defaultExpPerTask
             stats.gold += defaultGoldPerTask
@@ -46,7 +46,7 @@ class UserStatsUtils
             stats.exp -= defaultExpPerTask
             stats.gold -= defaultGoldPerTask
         else if object instanceof Reward
-          stats.gold -= object.gold
+          stats.gold = stats.gold - object.gold
 
         if stats.exp > UserStatsUtils.expToNextLvl stats.lvl
             stats.lvl += 1
