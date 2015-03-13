@@ -11,6 +11,13 @@ userSchema = new Schema
   token: String
   stats: {type: Schema.Types.ObjectId, ref: 'UserStats'}
 
+userStatsSchema = new Schema
+  hp: {type: Number, default: 100}
+  exp: {type: Number, default: 0}
+  gold: {type: Number, default: 0}
+  lvl: {type: Number, default: 1}
+  alive: {type: Boolean, default: true}
+
 habitSchema = new Schema
   text: String
   counters: [{type: Schema.Types.ObjectId, ref: 'HabitCounter'}]
@@ -36,12 +43,10 @@ toDoCounterSchema = new Schema
   value: {type: Number, default: 0}
   todo: {type: Schema.Types.ObjectId, ref: 'ToDo'}
 
-userStatsSchema = new Schema
-  hp: {type: Number, default: 100}
-  exp: {type: Number, default: 0}
+rewardSchema = new Schema
+  text: String
   gold: {type: Number, default: 0}
-  lvl: {type: Number, default: 1}
-  alive: {type: Boolean, default: true}
+  user: {type: Schema.Types.ObjectId, ref: 'User'}
 
 userSchema.plugin Timestamps
 userSchema.plugin FindOrCreate
@@ -58,6 +63,8 @@ toDoSchema.plugin Timestamps
 toDoSchema.plugin FindOrCreate
 toDoCounterSchema.plugin Timestamps
 toDoCounterSchema.plugin FindOrCreate
+rewardSchema.plugin Timestamps
+rewardSchema.plugin FindOrCreate
 
 module.exports.User = Mongoose.model('User', userSchema)
 module.exports.UserStats = Mongoose.model('UserStats', userStatsSchema)
@@ -67,3 +74,4 @@ module.exports.DailyTask = Mongoose.model('DailyTask', dailyTaskSchema)
 module.exports.DailyTaskCounter = Mongoose.model('DailyTaskCounter', dailyTaskCounterSchema)
 module.exports.ToDo = Mongoose.model('ToDo', toDoSchema)
 module.exports.ToDoCounter = Mongoose.model('ToDoCounter', toDoCounterSchema)
+module.exports.Reward = Mongoose.model('Reward', rewardSchema)

@@ -7,6 +7,7 @@ UserStats = Models.UserStats
 Habit = Models.Habit
 DailyTask = Models.DailyTask
 ToDo = Models.ToDo
+Reward = Models.Reward
 
 class UserStatsUtils
   defaultExpPerTask = 30
@@ -44,11 +45,16 @@ class UserStatsUtils
           else
             stats.exp -= defaultExpPerTask
             stats.gold -= defaultGoldPerTask
+        else if object instanceof Reward
+          stats.gold -= object.gold
 
         if stats.exp > UserStatsUtils.expToNextLvl stats.lvl
             stats.lvl += 1
         else if stats.exp <= UserStatsUtils.expToNextLvl(stats.lvl - 1)
           stats.lvl -= 1
+
+        if stats.gold < 0
+          stats.gold = 0
 
         stats.save()
         When(stats).then (stats) ->
