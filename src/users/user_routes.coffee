@@ -40,7 +40,7 @@ routes = [
         payload: Joi.object({
           email: Joi.string().required(),
           password: Joi.string().required(),
-          profileAvatar: Joi.string().optional(),
+          profileAvatar: Joi.string().empty().optional(),
           name: Joi.string().required()
         }).unknown()
       },
