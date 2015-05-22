@@ -56,10 +56,10 @@ routes = [
     ,
     config: {
       validate: {
-        payload: {
+        payload: Joi.object({
           email: Joi.string().required(),
           password: Joi.string().required()
-        }
+        }).unknown()
       },
       tags: ['api'],
       description: 'Login user'
