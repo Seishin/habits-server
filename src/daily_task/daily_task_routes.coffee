@@ -49,9 +49,9 @@ routes = [
         query: {
           userId: Joi.string().required()
         },
-        payload: {
+        payload: Joi.object({
           text: Joi.string().required()
-        }
+        }).unknown()
       },
       tags: ['api'],
       description: 'Creating a new daily task.'
@@ -69,9 +69,9 @@ routes = [
           userId: Joi.string().required(),
           date: Joi.string().required()
         },
-        params: {
+        params: Joi.object({
           taskId: Joi.string().required()
-        }
+        }).unknown()
       },
       tags: ['api'],
       description: 'Set a specific task checked.'
@@ -89,9 +89,9 @@ routes = [
           userId: Joi.string().required(),
           date: Joi.string().required()
         },
-        params: {
+        params: Joi.object({
           taskId: Joi.string().required()
-        }
+        }).unknown()
       },
       tags: ['api'],
       description: 'Set a specific task unchecked.'
@@ -112,9 +112,9 @@ routes = [
         params: {
           taskId: Joi.string().required()
         },
-        payload: {
+        payload: Joi.object({
           text: Joi.string().required()
-        }
+        }).unknown()
       },
       tags: ['api'],
       description: 'Update a specific task.'
