@@ -50,9 +50,9 @@ routes = [
         query: {
           userId: Joi.string().required()
         },
-        payload: {
+        payload: Joi.object({
           text: Joi.string().required()
-        }
+        }).unknown()
       },
       tags: ['api'],
       description: 'Creating a new habit for a user'
@@ -93,10 +93,10 @@ routes = [
         params: {
           habitId: Joi.string().required()
         },
-        payload: {
+        payload: Joi.object({
           text: Joi.string().optional()
           state: Joi.number().optional()
-        }
+        }).unknown()
       },
       tags: ['api'],
       description: 'Update a specific user\'s habit'
