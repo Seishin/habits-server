@@ -48,9 +48,9 @@ routes = [
         query: {
           userId: Joi.string().required()
         },
-        payload: {
+        payload: Joi.object({
           text: Joi.string().required()
-        }
+        }).unknown()
       },
       tags: ['api'],
       description: 'Creating a new to do task'
@@ -108,9 +108,9 @@ routes = [
         params: {
           todoId: Joi.string().required()
         },
-        payload: {
+        payload: Joi.object({
           text: Joi.string().required()
-        }
+        }).unknown()
       },
       tags: ['api'],
       description: 'Update a to do task'
