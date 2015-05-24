@@ -8,7 +8,7 @@ class HabitsUtils
   @getState = (habit, selectedDate) ->
     habit = habit.toObject()
     
-    counters = Counter.find({habit: habit}).exec()
+    counters = Counter.find({habit: habit._id}).exec()
     When(counters).then (counters) ->
       todayHabitsCount = 0
 

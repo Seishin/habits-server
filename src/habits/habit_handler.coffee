@@ -35,17 +35,17 @@ class HabitHandler
       reply(HabitsUtils.getState(habit, request.query.date)).code(201)
 
   @increment = (request, reply) ->
-    habit = Habit.findOne({_id: request.params.habitId, user: request.query.userId}).populate('counters').exec()
+    habit = Habit.findOne({_id: request.params.habitId, user: request.query.userId}).exec()
         
     When(habit).then (habit) ->
       counter = new Counter()
       counter.habit = habit
       counter.save()
-      
+
       habit.counters.push counter
       habit.save()
 
-      UserStatsUtils.updateStats(habit, true, (done) ->
+      UserStatsUtils.updateStats(habit, true, () ->
         reply(HabitsUtils.getState(habit, request.query.date)).code(200)
       )
 
